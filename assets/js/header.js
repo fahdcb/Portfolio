@@ -1,21 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-  // ── Save real path before masking URL ──
   var path = window.location.pathname.toLowerCase();
-  window.__realPath = path; // expose for footer.js
-
-  // ── Mask URL: always show root path in the address bar ──
-  if (window.location.protocol !== 'file:') {
-    try {
-      // Preserve the real base path so relative links keep working (GitHub Pages)
-      var realDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-      var base = document.createElement('base');
-      base.href = realDir;
-      document.head.appendChild(base);
-
-      var rootUrl = window.location.origin + '/';
-      history.replaceState(null, '', rootUrl);
-    } catch (e) { }
-  }
   var isHome =
     path === '' ||
     path === '/' ||

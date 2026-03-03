@@ -12,30 +12,1378 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="../../assets/css/style.css" />
 
+    <style>
+        /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --ws-bg: #f0f0f0;
+            --ws-toolbar-bg: #e8e8e8;
+            --ws-border: #b8b8b8;
+            --ws-border-dark: #888;
+            --ws-text: #1a1a1a;
+            --ws-text-muted: #555;
+            --ws-mono: 'Courier New', Courier, monospace;
+            --ws-ui: 'Outfit', 'Segoe UI', Tahoma, sans-serif;
+            --ws-white: #ffffff;
+            --ws-yellow: #faf0be;
+            --ws-blue: #c8e8ff;
+            --ws-purple: #e8d8ff;
+            --ws-green: #d0f0d0;
+            --ws-selected: #3584e4;
+            --ws-selected-fg: #ffffff;
+            --ws-btn-bg: #e0e0e0;
+            --ws-btn-border: #a0a0a0;
+            --ws-highlight: #3584e4;
+        }
+
+        html {
+            font-size: 14px;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--ws-ui);
+            background: var(--ws-bg);
+            color: var(--ws-text);
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════════
+       WIRESHARK TOP MENUBAR
+    ═══════════════════════════════════════════════ */
+        .ws-menubar {
+            background: #f5f5f5;
+            border-bottom: 1px solid var(--ws-border);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .ws-menu-item {
+            padding: 5px 11px;
+            cursor: default;
+            border: 1px solid transparent;
+            border-radius: 3px 3px 0 0;
+            font-size: 13px;
+            font-family: var(--ws-ui);
+            color: var(--ws-text);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .ws-menu-item:hover {
+            background: #e0e0e0;
+            border-color: var(--ws-border);
+        }
+
+        .ws-back-btn {
+            margin-left: auto;
+            margin-right: 6px;
+            padding: 3px 14px;
+            background: #f5a623;
+            border: 1px solid #c8820a;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: var(--ws-ui);
+            font-weight: 700;
+            color: #3a2000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background .15s;
+        }
+
+        .ws-back-btn:hover {
+            background: #e8951a;
+            border-color: #a06a06;
+        }
+
+        .ws-back-btn svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
+       TOOLBAR
+    ═══════════════════════════════════════════════ */
+        .ws-toolbar {
+            background: var(--ws-toolbar-bg);
+            border-bottom: 1px solid var(--ws-border);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .ws-tbtn {
+            width: 28px;
+            height: 24px;
+            border: 1px solid var(--ws-btn-border);
+            background: var(--ws-btn-bg);
+            border-radius: 3px;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ws-text);
+            flex-shrink: 0;
+        }
+
+        .ws-tbtn:hover {
+            background: #d0d0d0;
+        }
+
+        .ws-tbtn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .ws-sep {
+            width: 1px;
+            height: 20px;
+            background: var(--ws-border-dark);
+            margin: 0 3px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
+       FILTER BAR
+    ═══════════════════════════════════════════════ */
+        .ws-filter-bar {
+            background: var(--ws-toolbar-bg);
+            border-bottom: 2px solid var(--ws-border-dark);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ws-filter-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid var(--ws-border-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .ws-filter-dot {
+            width: 6px;
+            background: #4a90d9;
+            align-self: stretch;
+            flex-shrink: 0;
+        }
+
+        .ws-filter-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 3px 8px;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            color: var(--ws-text-muted);
+            background: transparent;
+        }
+
+        .ws-filter-arrow {
+            padding: 3px 7px;
+            border-left: 1px solid var(--ws-border);
+            font-size: 11px;
+            color: #555;
+            background: #f0f0f0;
+            cursor: default;
+        }
+
+        .ws-filter-presets {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .ws-fpreset {
+            padding: 2px 9px;
+            border: 1px solid var(--ws-btn-border);
+            background: var(--ws-btn-bg);
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: var(--ws-mono);
+            cursor: default;
+            white-space: nowrap;
+        }
+
+        .ws-fpreset:hover {
+            background: #d0d0d0;
+        }
+
+        /* ═══════════════════════════════════════════════
+       SEARCH BAR
+    ═══════════════════════════════════════════════ */
+        .ws-search-bar {
+            background: var(--ws-toolbar-bg);
+            border-bottom: 1px solid var(--ws-border);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .ws-sselect {
+            padding: 2px 6px;
+            border: 1px solid var(--ws-border-dark);
+            border-radius: 3px;
+            background: #fff;
+            font-size: 12px;
+            cursor: default;
+        }
+
+        .ws-sinput {
+            padding: 2px 8px;
+            border: 1px solid #88bb88;
+            border-radius: 3px;
+            background: #d8efd8;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            outline: none;
+            width: 160px;
+        }
+
+        .ws-sbtn {
+            padding: 2px 12px;
+            border: 1px solid var(--ws-border-dark);
+            background: var(--ws-btn-bg);
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .ws-sbtn:hover {
+            background: #d0d0d0;
+        }
+
+        /* ═══════════════════════════════════════════════
+       PACKET LIST TABLE
+    ═══════════════════════════════════════════════ */
+        .ws-packet-list {
+            width: 100%;
+            overflow-x: auto;
+            border-bottom: 2px solid var(--ws-border-dark);
+        }
+
+        .ws-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            min-width: 720px;
+        }
+
+        .ws-table thead tr {
+            background: var(--ws-toolbar-bg);
+            border-bottom: 2px solid var(--ws-border-dark);
+        }
+
+        .ws-table th {
+            padding: 3px 8px;
+            text-align: left;
+            font-weight: 700;
+            font-family: var(--ws-ui);
+            font-size: 12px;
+            border-right: 1px solid var(--ws-border);
+            white-space: nowrap;
+            cursor: default;
+            user-select: none;
+        }
+
+        .ws-table th:hover {
+            background: #d8d8d8;
+        }
+
+        .ws-table td {
+            padding: 2px 8px;
+            border-right: 1px solid rgba(0, 0, 0, .06);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+
+        .rw {
+            background: #fff;
+        }
+
+        .ry {
+            background: var(--ws-yellow);
+        }
+
+        .rb {
+            background: var(--ws-blue);
+        }
+
+        .rp {
+            background: var(--ws-purple);
+        }
+
+        .rg {
+            background: var(--ws-green);
+        }
+
+        .rs {
+            background: var(--ws-selected) !important;
+            color: var(--ws-selected-fg) !important;
+        }
+
+        .rs td {
+            color: var(--ws-selected-fg) !important;
+        }
+
+        .ws-table tr:hover:not(.rs) {
+            filter: brightness(.93);
+            cursor: default;
+        }
+
+        .rs-arrow::before {
+            content: '▶ ';
+            font-size: 10px;
+        }
+
+        /* ═══════════════════════════════════════════════
+       DETAIL PANE
+    ═══════════════════════════════════════════════ */
+        .ws-detail {
+            background: #fff;
+            border-bottom: 2px solid var(--ws-border-dark);
+            padding: 5px 8px;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            line-height: 1.75;
+        }
+
+        .wd {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .wd.wd-sel {
+            background: var(--ws-selected);
+            color: #fff;
+        }
+
+        .wd-exp {
+            display: inline-block;
+            width: 16px;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .wd-txt {
+            flex: 1;
+        }
+
+        .wd-txt a {
+            color: #2e5de0;
+        }
+
+        .wd-i1 {
+            padding-left: 16px;
+        }
+
+        .wd-i2 {
+            padding-left: 32px;
+        }
+
+        .wd-b {
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════
+       STATUS BAR
+    ═══════════════════════════════════════════════ */
+        .ws-status {
+            background: var(--ws-toolbar-bg);
+            border-top: 1px solid var(--ws-border-dark);
+            padding: 2px 10px;
+            font-family: var(--ws-mono);
+            font-size: 11px;
+            color: var(--ws-text-muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* ═══════════════════════════════════════════════
+       LAYOUT WRAPPER
+    ═══════════════════════════════════════════════ */
+        .page-wrap {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 14px 48px;
+        }
+
+        /* ═══════════════════════════════════════════════
+       PROJECT HERO
+    ═══════════════════════════════════════════════ */
+        .project-hero {
+            background: var(--ws-toolbar-bg);
+            border: 1px solid var(--ws-border-dark);
+            border-top: none;
+            padding: 14px 16px 12px;
+            margin-bottom: 0;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--ws-blue);
+            border: 1px solid #88bbdd;
+            color: #1a4070;
+            font-family: var(--ws-mono);
+            font-size: 11px;
+            padding: 1px 8px;
+            border-radius: 2px;
+            margin-bottom: 7px;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        .project-hero h1 {
+            font-size: 21px;
+            font-weight: 800;
+            color: var(--ws-text);
+            line-height: 1.3;
+            margin-bottom: 5px;
+        }
+
+        .project-hero h1 .hl {
+            color: var(--ws-highlight);
+            font-weight: 900;
+        }
+
+        .hero-sub {
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            color: var(--ws-text-muted);
+            margin-bottom: 9px;
+        }
+
+        .meta-pills {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--ws-btn-bg);
+            border: 1px solid var(--ws-btn-border);
+            border-radius: 3px;
+            padding: 2px 9px;
+            font-family: var(--ws-mono);
+            font-size: 11px;
+            color: var(--ws-text);
+            white-space: nowrap;
+        }
+
+        .meta-pill svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
+       SECTION LABEL + H2
+    ═══════════════════════════════════════════════ */
+        .proj-section {
+            border: 1px solid var(--ws-border-dark);
+            border-top: none;
+        }
+
+        .sec-label {
+            display: block;
+            background: var(--ws-toolbar-bg);
+            border-bottom: 1px solid var(--ws-border);
+            font-family: var(--ws-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            color: var(--ws-text-muted);
+            padding: 3px 12px;
+            text-transform: uppercase;
+        }
+
+        .proj-section h2 {
+            font-size: 15px;
+            font-weight: 700;
+            padding: 10px 12px 5px;
+            border-bottom: 1px solid rgba(0, 0, 0, .07);
+        }
+
+        /* ═══════════════════════════════════════════════
+       ACCROCHE TEXT
+    ═══════════════════════════════════════════════ */
+        .accroche {
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            line-height: 1.75;
+            padding: 8px 12px 14px;
+            color: var(--ws-text);
+        }
+
+        .accroche strong {
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════
+       BROWSER WINDOW (image panel)
+    ═══════════════════════════════════════════════ */
+        .browser-win {
+            border: 1px solid var(--ws-border-dark);
+            border-top: none;
+        }
+
+        .bwin-chrome {
+            background: var(--ws-toolbar-bg);
+            border-bottom: 1px solid var(--ws-border-dark);
+        }
+
+        .bwin-tabs {
+            display: flex;
+            align-items: center;
+            padding: 4px 8px 0;
+            gap: 4px;
+            border-bottom: 1px solid var(--ws-border);
+        }
+
+        .bwin-dots {
+            display: flex;
+            gap: 5px;
+            margin-right: 8px;
+            align-items: center;
+        }
+
+        .bdot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, .2);
+        }
+
+        .bdot-r {
+            background: #ff5f57;
+        }
+
+        .bdot-y {
+            background: #ffbd2e;
+        }
+
+        .bdot-g {
+            background: #28ca41;
+        }
+
+        .bwin-tab {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 12px;
+            background: #fff;
+            border: 1px solid var(--ws-border-dark);
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            font-size: 12px;
+            font-family: var(--ws-ui);
+        }
+
+        .bwin-tab svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .bwin-url {
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            gap: 6px;
+            background: #fff;
+            border-bottom: 1px solid var(--ws-border);
+            font-family: var(--ws-mono);
+            font-size: 12px;
+        }
+
+        .bwin-url svg {
+            width: 11px;
+            height: 11px;
+        }
+
+        .bwin-url span {
+            color: var(--ws-text-muted);
+        }
+
+        .bwin-url strong {
+            color: #1a4070;
+        }
+
+        .bwin-body {
+            background: #fff;
+        }
+
+        .bwin-body img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ═══════════════════════════════════════════════
+       OBJECTIVES LIST (packet rows)
+    ═══════════════════════════════════════════════ */
+        .obj-list {
+            list-style: none;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            border-top: 1px solid var(--ws-border);
+        }
+
+        .obj-list li {
+            display: flex;
+            align-items: flex-start;
+            padding: 5px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
+            line-height: 1.55;
+        }
+
+        .obj-list li:nth-child(1) {
+            background: #fff;
+        }
+
+        .obj-list li:nth-child(2) {
+            background: var(--ws-yellow);
+        }
+
+        .obj-list li:nth-child(3) {
+            background: var(--ws-blue);
+        }
+
+        .obj-list li:nth-child(4) {
+            background: var(--ws-purple);
+        }
+
+        .obj-list li:nth-child(5) {
+            background: var(--ws-green);
+        }
+
+        .obj-num {
+            min-width: 22px;
+            font-weight: 700;
+            color: var(--ws-text-muted);
+            font-size: 11px;
+            flex-shrink: 0;
+            padding-top: 1px;
+        }
+
+        .obj-txt {
+            flex: 1;
+        }
+
+        .obj-txt strong {
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════
+       TECH GRID (list rows)
+    ═══════════════════════════════════════════════ */
+        .tech-grid {
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid var(--ws-border);
+            font-family: var(--ws-mono);
+            font-size: 12px;
+        }
+
+        .tech-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+        }
+
+        .tech-row:nth-child(odd) {
+            background: #fff;
+        }
+
+        .tech-row:nth-child(even) {
+            background: #f7f7f7;
+        }
+
+        .tech-row:hover {
+            background: var(--ws-blue);
+        }
+
+        .tech-icon {
+            width: 36px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .tech-info {
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .tech-name {
+            font-weight: 700;
+            min-width: 165px;
+            white-space: nowrap;
+        }
+
+        .tech-desc {
+            color: var(--ws-text-muted);
+            font-size: 11px;
+        }
+
+        /* ═══════════════════════════════════════════════
+       CHAIN STEPS (detail pane rows)
+    ═══════════════════════════════════════════════ */
+        .chain-steps {
+            border-top: 1px solid var(--ws-border);
+            font-family: var(--ws-mono);
+            font-size: 12px;
+        }
+
+        .chain-step {
+            display: flex;
+            align-items: flex-start;
+            padding: 5px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+            line-height: 1.55;
+        }
+
+        .chain-step:nth-child(1) {
+            background: #fff;
+        }
+
+        .chain-step:nth-child(2) {
+            background: var(--ws-yellow);
+        }
+
+        .chain-step:nth-child(3) {
+            background: var(--ws-blue);
+        }
+
+        .chain-step:nth-child(4) {
+            background: var(--ws-purple);
+        }
+
+        .chain-step:nth-child(5) {
+            background: var(--ws-green);
+        }
+
+        .step-num {
+            min-width: 70px;
+            font-weight: 700;
+            font-size: 11px;
+            flex-shrink: 0;
+            padding-right: 8px;
+            color: #333;
+        }
+
+        .step-num::before {
+            content: '▸ ';
+            font-size: 9px;
+            color: var(--ws-text-muted);
+        }
+
+        .step-txt {
+            flex: 1;
+        }
+
+        .step-txt strong {
+            font-weight: 700;
+        }
+
+        .step-txt code {
+            background: rgba(0, 0, 0, .09);
+            padding: 0 3px;
+            border-radius: 2px;
+            font-family: var(--ws-mono);
+        }
+
+        /* ═══════════════════════════════════════════════
+       RESULTS GRID
+    ═══════════════════════════════════════════════ */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid var(--ws-border);
+            font-family: var(--ws-mono);
+            font-size: 12px;
+        }
+
+        .result-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--ws-border);
+            border-right: 1px solid var(--ws-border);
+            line-height: 1.55;
+        }
+
+        .result-card:nth-child(1) {
+            background: #fff;
+        }
+
+        .result-card:nth-child(2) {
+            background: var(--ws-yellow);
+            border-right: none;
+        }
+
+        .result-card:nth-child(3) {
+            background: var(--ws-blue);
+            border-bottom: none;
+        }
+
+        .result-card:nth-child(4) {
+            background: var(--ws-purple);
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .result-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .result-txt strong {
+            font-weight: 700;
+        }
+
+        .result-txt code {
+            background: rgba(0, 0, 0, .09);
+            padding: 0 3px;
+            border-radius: 2px;
+        }
+
+        /* ═══════════════════════════════════════════════
+       SKILLS LIST
+    ═══════════════════════════════════════════════ */
+        .skills-list {
+            list-style: none;
+            font-family: var(--ws-mono);
+            font-size: 12px;
+            border-top: 1px solid var(--ws-border);
+        }
+
+        .skills-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 5px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
+            line-height: 1.55;
+        }
+
+        .skills-list li:nth-child(odd) {
+            background: #fff;
+        }
+
+        .skills-list li:nth-child(even) {
+            background: #f7f7f7;
+        }
+
+        .skills-list li::before {
+            content: '▸';
+            color: var(--ws-highlight);
+            font-size: 10px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .skills-list li span {
+            flex: 1;
+        }
+
+        .skills-list li strong {
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════════
+         RESPONSIVE
+      ═══════════════════════════════════════════════ */
+        @media (max-width: 700px) {
+            html {
+                font-size: 13px;
+            }
+
+            .ws-menu-item:nth-child(n+7) {
+                display: none;
+            }
+
+            .ws-back-btn {
+                margin-left: 4px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                border-right: none !important;
+            }
+
+            .result-card:not(:last-child) {
+                border-bottom: 1px solid var(--ws-border) !important;
+            }
+
+            .ws-filter-presets {
+                display: none;
+            }
+
+            .project-hero h1 {
+                font-size: 16px;
+            }
+
+            .tech-info {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .tech-name {
+                min-width: unset;
+            }
+
+            .ws-status {
+                font-size: 10px;
+            }
+
+            .ws-search-bar .ws-sselect:first-child {
+                display: none;
+            }
+
+            .ws-sinput {
+                width: 110px;
+            }
+
+            .page-wrap {
+                padding: 0 0 32px;
+            }
+
+            .step-num {
+                min-width: 54px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ws-menu-item:nth-child(n+5) {
+                display: none;
+            }
+
+            .ws-table {
+                min-width: 420px;
+                font-size: 11px;
+            }
+
+            .ws-table th,
+            .ws-table td {
+                padding: 2px 5px;
+            }
+
+            .ws-toolbar {
+                gap: 2px;
+            }
+
+            .ws-tbtn {
+                width: 26px;
+                height: 22px;
+            }
+
+            .ws-search-bar {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+        }
+    </style>
 </head>
 
-<body class="theme-cyber">
+<body>
 
-    <div class="bg-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <!-- ════════ WIRESHARK MENUBAR ════════ -->
+    <div class="ws-menubar">
+        <span class="ws-menu-item">File</span>
+        <span class="ws-menu-item">Edit</span>
+        <span class="ws-menu-item">View</span>
+        <span class="ws-menu-item">Go</span>
+        <span class="ws-menu-item">Capture</span>
+        <span class="ws-menu-item">Analyze</span>
+        <span class="ws-menu-item">Statistics</span>
+        <span class="ws-menu-item">Telephony</span>
+        <span class="ws-menu-item">Wireless</span>
+        <span class="ws-menu-item">Tools</span>
+        <span class="ws-menu-item">Help</span>
+        <a class="ws-back-btn" href="javascript:history.back()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+            </svg>
+            Retour
+        </a>
+    </div>
 
-    <div class="category-page">
+    <!-- ════════ TOOLBAR ════════ -->
+    <div class="ws-toolbar">
+        <!-- File -->
+        <button class="ws-tbtn" title="Nouveau">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Ouvrir">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Sauvegarder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Fermer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+            </svg>
+        </button>
+        <div class="ws-sep"></div>
+        <!-- Capture -->
+        <button class="ws-tbtn" title="Démarrer capture">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Arrêter capture">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Redémarrer capture">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10" />
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+        </button>
+        <div class="ws-sep"></div>
+        <!-- Navigation -->
+        <button class="ws-tbtn" title="Premier paquet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="11 17 6 12 11 7" />
+                <line x1="18" y1="17" x2="18" y2="7" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Paquet précédent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Paquet suivant">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Dernier paquet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7" />
+                <line x1="6" y1="17" x2="6" y2="7" />
+            </svg>
+        </button>
+        <div class="ws-sep"></div>
+        <!-- Zoom -->
+        <button class="ws-tbtn" title="Zoom +">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="11" y1="8" x2="11" y2="14" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Zoom -">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Taille normale">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+            </svg>
+        </button>
+        <button class="ws-tbtn" title="Redimensionner colonnes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+        </button>
+    </div>
 
-        <script src="../../assets/js/header.js" defer></script>
+    <!-- ════════ FILTER BAR ════════ -->
+    <div class="ws-filter-bar">
+        <div class="ws-filter-wrap">
+            <span class="ws-filter-dot"></span>
+            <input class="ws-filter-input" type="text" placeholder="Apply a display filter … &lt;Ctrl-/&gt;" readonly />
+            <span class="ws-filter-arrow">▾</span>
+        </div>
+        <div class="ws-filter-presets">
+            <button class="ws-fpreset">basic</button>
+            <button class="ws-fpreset">basic+</button>
+            <button class="ws-fpreset">basic+dns</button>
+        </div>
+    </div>
 
-        <!-- ══════════ PROJECT HERO ══════════ -->
+    <!-- ════════ SEARCH BAR ════════ -->
+    <div class="ws-search-bar">
+        <select class="ws-sselect">
+            <option>Packet details</option>
+        </select>
+        <select class="ws-sselect">
+            <option>Narrow &amp; Wide</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:4px;font-size:12px;"><input type="checkbox" style="margin:0;">
+            Case sensitive</label>
+        <select class="ws-sselect">
+            <option>String</option>
+        </select>
+        <input class="ws-sinput" type="text" value="desktop-" readonly />
+        <button class="ws-sbtn">Find</button>
+        <button class="ws-sbtn" style="font-weight:400;">Cancel</button>
+    </div>
+
+    <!-- ════════ PACKET LIST ════════ -->
+    <div class="ws-packet-list">
+        <table class="ws-table">
+            <thead>
+                <tr>
+                    <th style="min-width:160px;">Time</th>
+                    <th style="min-width:135px;">Src</th>
+                    <th style="min-width:50px;">port</th>
+                    <th style="min-width:135px;">Dst</th>
+                    <th style="min-width:50px;">port</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="rw">
+                    <td>2024-09-15 08:00:01</td>
+                    <td>0.0.0.0</td>
+                    <td>68</td>
+                    <td>255.255.255.255</td>
+                    <td>67</td>
+                    <td>DHCP Request — SAE 1.02 Init</td>
+                </tr>
+                <tr class="rb">
+                    <td>2024-09-15 08:00:01</td>
+                    <td>192.168.1.1</td>
+                    <td>67</td>
+                    <td>255.255.255.255</td>
+                    <td>68</td>
+                    <td>DHCP ACK — Adresse assignée PC VLAN Data</td>
+                </tr>
+                <tr class="ry">
+                    <td>2024-09-15 08:00:02</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>192.168.10.254</td>
+                    <td>5060</td>
+                    <td>SIP REGISTER — Grandstream GXP1625 enreg. Asterisk</td>
+                </tr>
+                <tr class="ry">
+                    <td>2024-09-15 08:00:02</td>
+                    <td>192.168.10.254</td>
+                    <td>5060</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>SIP 200 OK — Enregistrement confirmé</td>
+                </tr>
+                <tr class="rp">
+                    <td>2024-09-15 08:00:03</td>
+                    <td>fe80::dc7b:…</td>
+                    <td>546</td>
+                    <td>ff02::1:2</td>
+                    <td>547</td>
+                    <td>Solicit — IPv6 Link-local</td>
+                </tr>
+                <tr class="rw">
+                    <td>2024-09-15 08:00:04</td>
+                    <td>192.168.1.20</td>
+                    <td>—</td>
+                    <td>8.8.8.8</td>
+                    <td>53</td>
+                    <td>DNS Standard query A google.com (NAT)</td>
+                </tr>
+                <tr class="rb">
+                    <td>2024-09-15 08:00:04</td>
+                    <td>8.8.8.8</td>
+                    <td>53</td>
+                    <td>192.168.1.20</td>
+                    <td>—</td>
+                    <td>DNS Standard response A 142.250.75.238</td>
+                </tr>
+                <tr class="ry">
+                    <td>2024-09-15 08:00:05</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>192.168.10.11</td>
+                    <td>5060</td>
+                    <td>SIP INVITE — Appel VoIP initié (poste 101 → 102)</td>
+                </tr>
+                <tr class="ry">
+                    <td>2024-09-15 08:00:05</td>
+                    <td>192.168.10.11</td>
+                    <td>5060</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>SIP 180 Ringing</td>
+                </tr>
+                <tr class="ry">
+                    <td>2024-09-15 08:00:07</td>
+                    <td>192.168.10.11</td>
+                    <td>5060</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>SIP 200 OK — Appel décroché</td>
+                </tr>
+                <tr class="rg">
+                    <td>2024-09-15 08:00:07</td>
+                    <td>192.168.10.10</td>
+                    <td>16384</td>
+                    <td>192.168.10.11</td>
+                    <td>16384</td>
+                    <td>RTP — Flux audio G.711 (PCMU)</td>
+                </tr>
+                <tr class="rw">
+                    <td>2024-09-15 08:00:08</td>
+                    <td>00:1a:2b:3c:4d:5e</td>
+                    <td>—</td>
+                    <td>ff:ff:ff:ff:ff:ff</td>
+                    <td>—</td>
+                    <td>ARP Who has 192.168.1.1? Tell 192.168.1.20</td>
+                </tr>
+                <tr class="rw">
+                    <td>2024-09-15 08:00:08</td>
+                    <td>00:0b:46:93:…</td>
+                    <td>—</td>
+                    <td>00:1a:2b:3c:4d:5e</td>
+                    <td>—</td>
+                    <td>ARP Reply 192.168.1.1 is at 00:0b:46:93:d2:…</td>
+                </tr>
+                <tr class="rb">
+                    <td>2024-09-15 08:00:09</td>
+                    <td>192.168.100.2</td>
+                    <td>22</td>
+                    <td>192.168.1.20</td>
+                    <td>—</td>
+                    <td>SSH — Session admin routeur Cisco (accès sécurisé)</td>
+                </tr>
+                <tr class="rs rs-arrow">
+                    <td>2024-09-15 08:00:12</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>192.168.10.11</td>
+                    <td>5060</td>
+                    <td>SIP BYE — Fin appel VoIP VLAN 10</td>
+                </tr>
+                <tr class="rp">
+                    <td>2024-09-15 08:00:12</td>
+                    <td>192.168.10.11</td>
+                    <td>5060</td>
+                    <td>192.168.10.10</td>
+                    <td>5060</td>
+                    <td>SIP 200 OK — BYE confirmé, session fermée</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ════════ DETAIL PANE ════════ -->
+    <div class="ws-detail">
+        <div class="wd"><span class="wd-exp">▸</span><span class="wd-txt">Session Initiation Protocol (SIP), Method:
+                BYE</span></div>
+        <div class="wd wd-i1"><span class="wd-exp"> </span><span class="wd-txt">Request-Line: BYE sip:102@192.168.10.11
+                SIP/2.0</span></div>
+        <div class="wd"><span class="wd-exp">▾</span><span class="wd-txt">User Datagram Protocol, Src Port: 5060, Dst
+                Port: 5060</span></div>
+        <div class="wd"><span class="wd-exp">▾</span><span class="wd-txt wd-b">Internet Protocol Version 4, Src:
+                192.168.10.10, Dst: 192.168.10.11</span></div>
+        <div class="wd wd-i1"><span class="wd-exp"> </span><span class="wd-txt">VLAN 10 (VoIP) — Encapsulation 802.1q,
+                Priority: 5</span></div>
+        <div class="wd wd-i1"><span class="wd-exp"> </span><span class="wd-txt">Ethernet II, Src: 00:0a:95:9d:68:16,
+                Dst: 00:0b:46:93:d2:aa</span></div>
+        <div class="wd"><span class="wd-exp">▸</span><span class="wd-txt">Call-ID: a84b4c76e66710@192.168.10.10</span>
+        </div>
+        <div class="wd wd-sel"><span class="wd-exp"> ▸</span><span class="wd-txt">DESKTOP-SAE102.local: Réseau
+                entreprise déployé — VLANs, NAT, Asterisk, SSH opérationnels</span></div>
+        <div class="wd wd-i1"><span class="wd-exp"> </span><span class="wd-txt" style="color:#2e5de0;">[Response In:
+                Poster technique — Oral S1 IUT Vélizy]</span></div>
+    </div>
+
+    <!-- ════════ STATUS BAR ════════ -->
+    <div class="ws-status">
+        <span>SAE1.02-reseau-entreprise.pcap</span>
+        <span>Packets: 16 · Displayed: 16 · Marked: 1 · Dropped: 0</span>
+        <span>192.168.10.10 ↔ 192.168.10.11 · SIP · VLAN 10 · Cisco IOS</span>
+    </div>
+
+    <!-- ════════ PAGE CONTENT ════════ -->
+    <div class="page-wrap">
+
+        <!-- PROJECT HERO -->
         <div class="project-hero">
-            <span class="project-hero-badge">Projet Cyber — Semestre 1</span>
-            <h1>Monter le réseau d'une entreprise <span class="gradient-text">de zéro</span></h1>
-            <p class="inline-4dcd71">
-                VLANs, ToIP, NAT et routage Cisco sur maquette réelle
-            </p>
-            <div class="project-meta inline-69c208">
-                <span class="project-meta-pill">
+            <span class="hero-badge">Projet Cyber — Semestre 1</span>
+            <h1>Monter le réseau d'une entreprise <span class="hl">de zéro</span></h1>
+            <p class="hero-sub">VLANs, ToIP, NAT et routage Cisco sur maquette réelle</p>
+            <div class="meta-pills">
+                <span class="meta-pill">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
@@ -43,7 +1391,7 @@
                     </svg>
                     SAE 1.02
                 </span>
-                <span class="project-meta-pill">
+                <span class="meta-pill">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
@@ -51,7 +1399,7 @@
                     </svg>
                     6 jours de projet
                 </span>
-                <span class="project-meta-pill">
+                <span class="meta-pill">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -61,7 +1409,7 @@
                     </svg>
                     Équipe de 2-3
                 </span>
-                <span class="project-meta-pill">
+                <span class="meta-pill">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -72,265 +1420,230 @@
             </div>
         </div>
 
-        <!-- ══════════ CONTENT ══════════ -->
-        <div class="project-body">
-
-            <!-- Contexte -->
-            <div class="proj-section">
-                <span class="proj-section-label">CONTEXTE</span>
-                <h2>Le projet fondateur : d'un switch vierge à un réseau d'entreprise</h2>
-                <p class="accroche-text">
-                    C'est le projet fondateur de toute la série réseau du BUT RT : déployer <strong>de zéro</strong>
-                    l'infrastructure réseau complète d'une petite entreprise, sur du matériel réel.<br><br>
-                    En partant d'un switch et d'un routeur Cisco vierges, il fallait câbler, adresser, segmenter avec
-                    des VLANs, configurer la téléphonie IP et ouvrir l'accès à Internet via NAT — exactement ce que fait
-                    un <strong>administrateur réseau</strong> en entreprise.
-                </p>
-            </div>
-
-            <!-- Architecture Image -->
-            <div class="browser-window">
-                <div class="browser-chrome">
-                    <div class="browser-tabs">
-                        <div class="browser-dots">
-                            <span class="browser-dot browser-dot--red"></span>
-                            <span class="browser-dot browser-dot--yellow"></span>
-                            <span class="browser-dot browser-dot--green"></span>
-                        </div>
-                        <div class="browser-tab">
-                            <div class="browser-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                </svg></div>
-                            Architecture — Initiation Réseaux
-                        </div>
-                    </div>
-                    <div class="browser-url-bar">
-                        <span class="browser-lock"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg></span>
-                        <span class="browser-url-text"><strong>portfolio.fahd.dev</strong>/reseaux/architecture</span>
-                    </div>
-                </div>
-                <div class="browser-content">
-                    <img src="../../assets/images/architecture-reseau.png"
-                        alt="Architecture réseau avec Packet Tracer — Routeurs, Switchs, VLANs, VoIP"
-                        style="width:100%; display:block;" />
-                </div>
-            </div>
-
-            <!-- Objectifs -->
-            <div class="proj-section">
-                <span class="proj-section-label">OBJECTIFS</span>
-                <h2>Missions du projet</h2>
-                <ul class="objectives-list">
-                    <li>
-                        <span class="obj-num">1</span>
-                        <span class="obj-text">Concevoir et déployer un <strong>plan d'adressage IP</strong> et une
-                            segmentation <strong>VLAN</strong> (data, VoIP, management).</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">2</span>
-                        <span class="obj-text">Configurer un <strong>switch Cisco</strong> (VLANs, trunk 802.1q) et un
-                            <strong>routeur Cisco</strong> (routage inter-VLAN, NAT, SSH).</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">3</span>
-                        <span class="obj-text">Installer et configurer un <strong>serveur de téléphonie
-                                Asterisk</strong> sous Linux et raccorder 2 téléphones IP Grandstream.</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">4</span>
-                        <span class="obj-text">Analyser les communications réseau avec <strong>Wireshark</strong> (SIP,
-                            RTP, encapsulation TCP/IP).</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">5</span>
-                        <span class="obj-text">Documenter l'architecture avec un <strong>poster technique</strong> et la
-                            présenter à l'oral.</span>
-                    </li>
-                </ul>
-            </div>
-
-
-
-            <!-- Technologies -->
-            <div class="proj-section">
-                <span class="proj-section-label">TECHNOLOGIES</span>
-                <h2>Outils &amp; équipements utilisés</h2>
-                <div class="tech-grid">
-                    <div class="tech-badge tech-cisco-router">
-                        <div class="tech-icon"><img src="../../assets/images/cisco-icon.png" alt="Cisco"
-                                style="width: 32px; height: auto; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Routeur Cisco</span>
-                            <span class="tech-desc">Routage inter-VLAN, NAT, route par défaut, accès SSH</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-cisco-switch">
-                        <div class="tech-icon"><img src="../../assets/images/cisco-icon.png" alt="Cisco"
-                                style="width: 32px; height: auto; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Switch Cisco</span>
-                            <span class="tech-desc">Configuration VLANs, ports access et trunk 802.1q</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-asterisk">
-                        <div class="tech-icon"><img src="../../assets/images/asterisk-icon.png" alt="Asterisk"
-                                style="width: 24px; height: 24px; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Asterisk</span>
-                            <span class="tech-desc">Serveur de téléphonie IP (fichiers sip.conf, extensions.conf)</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-grandstream">
-                        <div class="tech-icon"><img src="../../assets/images/grandstream-icon.jpg" alt="Grandstream"
-                                style="width: 24px; height: 24px; vertical-align: middle; border-radius: 4px;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Grandstream GXP1625</span>
-                            <span class="tech-desc">Téléphones IP réels, enregistrement SIP, VLAN 802.1q</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-linux">
-                        <div class="tech-icon"><img src="../../assets/images/linux-icon.png" alt="Linux"
-                                style="width: 24px; height: 24px; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Linux Debian (VirtualBox)</span>
-                            <span class="tech-desc">Hébergement du serveur Asterisk, configuration réseau</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-wireshark">
-                        <div class="tech-icon"><img src="../../assets/images/wireshark-icon.png" alt="Wireshark"
-                                style="width: 24px; height: 24px; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">Wireshark</span>
-                            <span class="tech-desc">Capture et analyse trames SIP, RTP, ping, 802.1q</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-net-tools">
-                        <div class="tech-icon"><img src="../../assets/images/nmap-icon.png" alt="Nmap"
-                                style="width: 24px; height: 16px; vertical-align: middle;"></div>
-                        <div class="tech-info">
-                            <span class="tech-name">nmap / netstat / traceroute</span>
-                            <span class="tech-desc">Tests de connectivité et audit des ports ouverts</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-drawio">
-                        <div class="tech-icon">🖼️</div>
-                        <div class="tech-info">
-                            <span class="tech-name">draw.io / Lucidchart</span>
-                            <span class="tech-desc">Réalisation du schéma réseau avec topologies logiques et
-                                physiques</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Étapes -->
-            <div class="proj-section">
-                <span class="proj-section-label">DÉROULEMENT</span>
-                <h2>Ce qui a été déployé concrètement</h2>
-                <div class="chain-steps">
-                    <div class="chain-step">
-                        <span class="chain-step-num">Étape 01</span>
-                        <span class="chain-step-text"><strong>3 VLANs distincts</strong> : data (PC), VoIP (téléphones +
-                            Asterisk), management, avec plan d'adressage en <code>192.168.X.0/24</code>.</span>
-                    </div>
-                    <div class="chain-step">
-                        <span class="chain-step-num">Étape 02</span>
-                        <span class="chain-step-text"><strong>Routage inter-VLAN</strong> : Déployé sur le routeur Cisco
-                            avec des sous-interfaces et encapsulations 802.1q.</span>
-                    </div>
-                    <div class="chain-step">
-                        <span class="chain-step-num">Étape 03</span>
-                        <span class="chain-step-text"><strong>NAT & Accès internet</strong> : Configuration du routeur
-                            pour permettre aux PC internes d'accéder à Internet via l'adresse IP externe partagée avec
-                            l'IUT.</span>
-                    </div>
-                    <div class="chain-step">
-                        <span class="chain-step-num">Étape 04</span>
-                        <span class="chain-step-text"><strong>Serveur Asterisk & VoIP</strong> : Installé sur machine
-                            virtuelle Linux Debian avec 2 comptes SIP enregistrés et des appels fonctionnels entre les
-                            téléphones physiques.</span>
-                    </div>
-                    <div class="chain-step">
-                        <span class="chain-step-num">Étape 05</span>
-                        <span class="chain-step-text"><strong>Accès SSH distant</strong> : Création d'un accès sécurisé
-                            au routeur, testé depuis un PC interne pour administrer les équipements.</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Résultats -->
-            <div class="proj-section">
-                <span class="proj-section-label">RÉSULTATS</span>
-                <h2>Le livrable principal : le poster technique</h2>
-                <div class="results-grid">
-                    <div class="result-card">
-                        <div class="result-icon">🗺️</div>
-                        <div class="result-text"><strong>Schéma complet du réseau</strong> avec adresses IP et MAC de
-                            chaque équipement</div>
-                    </div>
-                    <div class="result-card">
-                        <div class="result-icon">📊</div>
-                        <div class="result-text">Table de commutation du switch, table de routage, et cache ARP d'un PC
-                        </div>
-                    </div>
-                    <div class="result-card">
-                        <div class="result-icon">👁️</div>
-                        <div class="result-text"><strong>Capture Wireshark</strong> d'un appel SIP (INVITE, 200 OK,
-                            BYE…) et analyse détaillée</div>
-                    </div>
-                    <div class="result-card">
-                        <div class="result-icon">✅</div>
-                        <div class="result-text">Résultats de diagnostics réussis : <code>ping</code>,
-                            <code>traceroute</code>, <code>netstat</code>, <code>nmap</code>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Compétences -->
-            <div class="proj-section">
-                <span class="proj-section-label">COMPÉTENCES</span>
-                <h2>Ce que j'ai appris</h2>
-                <ul class="skills-learned">
-                    <li>
-                        <span>Comprendre et mettre en œuvre le <strong>modèle TCP/IP</strong> en conditions réelles
-                            (encapsulation, commutation, routage).</span>
-                    </li>
-                    <li>
-                        <span>Configurer un <strong>switch et routeur Cisco</strong> "from scratch" via la ligne de
-                            commande CLI (IOS).</span>
-                    </li>
-                    <li>
-                        <span><strong>Administrer Linux</strong> : gestionnaire de paquets, configuration réseau,
-                            édition de fichiers via terminal.</span>
-                    </li>
-                    <li>
-                        <span>Comprendre le protocole <strong>SIP/RTP</strong> et la téléphonie sur IP (signalisation +
-                            flux audio).</span>
-                    </li>
-                    <li>
-                        <span><strong>Diagnostiquer et dépanner</strong> un réseau avec les outils standards (ping,
-                            traceroute, nmap, netstat, Wireshark).</span>
-                    </li>
-                    <li>
-                        <span><strong>Documenter une architecture</strong> réseau de façon claire, technique et
-                            professionnelle pour présentation.</span>
-                    </li>
-                </ul>
-            </div>
-
+        <!-- CONTEXTE -->
+        <div class="proj-section">
+            <span class="sec-label">CONTEXTE</span>
+            <h2>Le projet fondateur : d'un switch vierge à un réseau d'entreprise</h2>
+            <p class="accroche">
+                C'est le projet fondateur de toute la série réseau du BUT RT : déployer <strong>de zéro</strong>
+                l'infrastructure réseau complète d'une petite entreprise, sur du matériel réel.<br><br>
+                En partant d'un switch et d'un routeur Cisco vierges, il fallait câbler, adresser, segmenter avec
+                des VLANs, configurer la téléphonie IP et ouvrir l'accès à Internet via NAT — exactement ce que fait
+                un <strong>administrateur réseau</strong> en entreprise.
+            </p>
         </div>
 
-        <script src="../../assets/js/footer.js" defer></script>
+        <!-- ARCHITECTURE IMAGE -->
+        <div class="browser-win">
+            <div class="bwin-chrome">
+                <div class="bwin-tabs">
+                    <div class="bwin-dots">
+                        <span class="bdot bdot-r"></span>
+                        <span class="bdot bdot-y"></span>
+                        <span class="bdot bdot-g"></span>
+                    </div>
+                    <div class="bwin-tab">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        Architecture — Initiation Réseaux
+                    </div>
+                </div>
+                <div class="bwin-url">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    <span><strong>portfolio.fahd.dev</strong>/reseaux/architecture</span>
+                </div>
+            </div>
+            <div class="bwin-body">
+                <img src="assets/images/architecture-reseau.png"
+                    alt="Architecture réseau avec Packet Tracer — Routeurs, Switchs, VLANs, VoIP" />
+            </div>
+        </div>
 
-    </div>
+        <!-- OBJECTIFS -->
+        <div class="proj-section">
+            <span class="sec-label">OBJECTIFS</span>
+            <h2>Missions du projet</h2>
+            <ul class="obj-list">
+                <li><span class="obj-num">1</span><span class="obj-txt">Concevoir et déployer un <strong>plan
+                            d'adressage IP</strong> et une segmentation <strong>VLAN</strong> (data, VoIP,
+                        management).</span></li>
+                <li><span class="obj-num">2</span><span class="obj-txt">Configurer un <strong>switch Cisco</strong>
+                        (VLANs, trunk 802.1q) et un <strong>routeur Cisco</strong> (routage inter-VLAN, NAT,
+                        SSH).</span></li>
+                <li><span class="obj-num">3</span><span class="obj-txt">Installer et configurer un <strong>serveur de
+                            téléphonie Asterisk</strong> sous Linux et raccorder 2 téléphones IP Grandstream.</span>
+                </li>
+                <li><span class="obj-num">4</span><span class="obj-txt">Analyser les communications réseau avec
+                        <strong>Wireshark</strong> (SIP, RTP, encapsulation TCP/IP).</span></li>
+                <li><span class="obj-num">5</span><span class="obj-txt">Documenter l'architecture avec un <strong>poster
+                            technique</strong> et la présenter à l'oral.</span></li>
+            </ul>
+        </div>
+
+        <!-- TECHNOLOGIES -->
+        <div class="proj-section">
+            <span class="sec-label">TECHNOLOGIES</span>
+            <h2>Outils &amp; équipements utilisés</h2>
+            <div class="tech-grid">
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/cisco-icon.png" alt="Cisco"
+                            style="width:32px;height:auto;"></div>
+                    <div class="tech-info"><span class="tech-name">Routeur Cisco</span><span class="tech-desc">Routage
+                            inter-VLAN, NAT, route par défaut, accès SSH</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/cisco-icon.png" alt="Cisco"
+                            style="width:32px;height:auto;"></div>
+                    <div class="tech-info"><span class="tech-name">Switch Cisco</span><span
+                            class="tech-desc">Configuration VLANs, ports access et trunk 802.1q</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/asterisk-icon.png" alt="Asterisk"
+                            style="width:24px;height:24px;"></div>
+                    <div class="tech-info"><span class="tech-name">Asterisk</span><span class="tech-desc">Serveur de
+                            téléphonie IP (fichiers sip.conf, extensions.conf)</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/grandstream-icon.jpg" alt="Grandstream"
+                            style="width:24px;height:24px;border-radius:4px;"></div>
+                    <div class="tech-info"><span class="tech-name">Grandstream GXP1625</span><span
+                            class="tech-desc">Téléphones IP réels, enregistrement SIP, VLAN 802.1q</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/linux-icon.png" alt="Linux"
+                            style="width:24px;height:24px;"></div>
+                    <div class="tech-info"><span class="tech-name">Linux Debian (VirtualBox)</span><span
+                            class="tech-desc">Hébergement du serveur Asterisk, configuration réseau</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/wireshark-icon.png" alt="Wireshark"
+                            style="width:24px;height:24px;"></div>
+                    <div class="tech-info"><span class="tech-name">Wireshark</span><span class="tech-desc">Capture et
+                            analyse trames SIP, RTP, ping, 802.1q</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon"><img src="assets/images/nmap-icon.png" alt="Nmap"
+                            style="width:24px;height:16px;"></div>
+                    <div class="tech-info"><span class="tech-name">nmap / netstat / traceroute</span><span
+                            class="tech-desc">Tests de connectivité et audit des ports ouverts</span></div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-icon">🖼️</div>
+                    <div class="tech-info"><span class="tech-name">draw.io / Lucidchart</span><span
+                            class="tech-desc">Réalisation du schéma réseau avec topologies logiques et physiques</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DÉROULEMENT -->
+        <div class="proj-section">
+            <span class="sec-label">DÉROULEMENT</span>
+            <h2>Ce qui a été déployé concrètement</h2>
+            <div class="chain-steps">
+                <div class="chain-step"><span class="step-num">Étape 01</span><span class="step-txt"><strong>3 VLANs
+                            distincts</strong> : data (PC), VoIP (téléphones + Asterisk), management, avec plan
+                        d'adressage en <code>192.168.X.0/24</code>.</span></div>
+                <div class="chain-step"><span class="step-num">Étape 02</span><span class="step-txt"><strong>Routage
+                            inter-VLAN</strong> : Déployé sur le routeur Cisco avec des sous-interfaces et
+                        encapsulations 802.1q.</span></div>
+                <div class="chain-step"><span class="step-num">Étape 03</span><span class="step-txt"><strong>NAT &amp;
+                            Accès internet</strong> : Configuration du routeur pour permettre aux PC internes d'accéder
+                        à Internet via l'adresse IP externe partagée avec l'IUT.</span></div>
+                <div class="chain-step"><span class="step-num">Étape 04</span><span class="step-txt"><strong>Serveur
+                            Asterisk &amp; VoIP</strong> : Installé sur machine virtuelle Linux Debian avec 2 comptes
+                        SIP enregistrés et des appels fonctionnels entre les téléphones physiques.</span></div>
+                <div class="chain-step"><span class="step-num">Étape 05</span><span class="step-txt"><strong>Accès SSH
+                            distant</strong> : Création d'un accès sécurisé au routeur, testé depuis un PC interne pour
+                        administrer les équipements.</span></div>
+            </div>
+        </div>
+
+        <!-- RÉSULTATS -->
+        <div class="proj-section">
+            <span class="sec-label">RÉSULTATS</span>
+            <h2>Le livrable principal : le poster technique</h2>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-icon">🗺️</div>
+                    <div class="result-txt"><strong>Schéma complet du réseau</strong> avec adresses IP et MAC de chaque
+                        équipement</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">📊</div>
+                    <div class="result-txt">Table de commutation du switch, table de routage, et cache ARP d'un PC</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">👁️</div>
+                    <div class="result-txt"><strong>Capture Wireshark</strong> d'un appel SIP (INVITE, 200 OK, BYE…) et
+                        analyse détaillée</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">✅</div>
+                    <div class="result-txt">Résultats de diagnostics réussis : <code>ping</code>,
+                        <code>traceroute</code>, <code>netstat</code>, <code>nmap</code></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPÉTENCES -->
+        <div class="proj-section">
+            <span class="sec-label">COMPÉTENCES</span>
+            <h2>Ce que j'ai appris</h2>
+            <ul class="skills-list">
+                <li><span>Comprendre et mettre en œuvre le <strong>modèle TCP/IP</strong> en conditions réelles
+                        (encapsulation, commutation, routage).</span></li>
+                <li><span>Configurer un <strong>switch et routeur Cisco</strong> "from scratch" via la ligne de commande
+                        CLI (IOS).</span></li>
+                <li><span><strong>Administrer Linux</strong> : gestionnaire de paquets, configuration réseau, édition de
+                        fichiers via terminal.</span></li>
+                <li><span>Comprendre le protocole <strong>SIP/RTP</strong> et la téléphonie sur IP (signalisation + flux
+                        audio).</span></li>
+                <li><span><strong>Diagnostiquer et dépanner</strong> un réseau avec les outils standards (ping,
+                        traceroute, nmap, netstat, Wireshark).</span></li>
+                <li><span><strong>Documenter une architecture</strong> réseau de façon claire, technique et
+                        professionnelle pour présentation.</span></li>
+            </ul>
+        </div>
+
+    </div><!-- /page-wrap -->
+
+    <script>
+        // Highlight active filter preset on click
+        document.querySelectorAll('.ws-fpreset').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.ws-fpreset').forEach(b => b.style.background = '');
+                this.style.background = '#c8e8ff';
+                this.style.borderColor = '#5599cc';
+            });
+        });
+
+        // Click packet rows to "select" them
+        document.querySelectorAll('.ws-table tbody tr').forEach(row => {
+            row.addEventListener('click', function () {
+                document.querySelectorAll('.ws-table tbody tr').forEach(r => {
+                    r.classList.remove('rs');
+                    r.classList.remove('rs-arrow');
+                    // restore original color
+                    const orig = r.dataset.orig;
+                    if (orig) r.className = orig;
+                });
+                // save original and apply selected
+                if (!this.dataset.orig) this.dataset.orig = this.className;
+                this.className = 'rs rs-arrow';
+            });
+        });
+        // Save originals on load
+        document.querySelectorAll('.ws-table tbody tr').forEach(row => {
+            row.dataset.orig = row.className;
+        });
+    </script>
 
 </body>
 

@@ -52,7 +52,7 @@
 
   var bannerHTML = `
     <div class="site-banner">
-      <span>Site en cours d'évolution — Nouvelle MAJ prochainement 🚀</span>
+      <span>Site en cours d'évolution — Nouvelle MAJ prochainement !</span>
     </div>`;
 
   var headerHTML;

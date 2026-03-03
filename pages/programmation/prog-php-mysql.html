@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Application PHP/MySQL — Portfolio · Fahd Cliquet-Benbrahim</title>
   <meta name="description"
     content="Découvrez : Application PHP/MySQL. Portfolio de Fahd Cliquet-Benbrahim, étudiant en BUT Réseaux et Télécommunications (Cybersécurité) à l'IUT de Vélizy." />
@@ -1215,6 +1215,25 @@
     }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .vsc-sidebar {
+        width: 200px;
+      }
+
+      .hero-title {
+        font-size: 24px;
+      }
+
+      .tech-grid,
+      .features-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+
+      .phases-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+    }
+
     @media (max-width: 900px) {
       .vsc-sidebar {
         display: none;
@@ -1230,14 +1249,103 @@
         display: none;
       }
 
+      .vsc-titlebar-menu {
+        display: none;
+      }
+
+      .vsc-titlebar-title {
+        font-size: 11px;
+      }
+
+      .vsc-menu-item:not(:first-child):not(:last-child) {
+        display: none;
+      }
+
+      .hero-block {
+        padding: 16px 14px;
+      }
+
       .hero-title {
         font-size: 20px;
       }
 
+      .content-block {
+        padding: 12px 12px;
+      }
+
+      .section-h2 {
+        font-size: 15px;
+      }
+
       .tech-grid,
-      .phases-grid,
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .phases-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meta-pills {
+        gap: 6px;
+      }
+
+      .meta-pill {
+        font-size: 10px;
+        padding: 3px 7px;
+      }
+
+      .objectives-list li {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+
+      .skills-list li {
+        font-size: 12px;
+      }
+
+      .terminal-tab {
+        flex-wrap: wrap;
+        font-size: 10px;
+      }
+
+      .line-numbers {
+        width: 36px;
+        font-size: 11px;
+      }
+
+      .code-content {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .vsc-titlebar-title {
+        display: none;
+      }
+
+      .tech-grid,
       .features-grid {
         grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        font-size: 17px;
+      }
+
+      .section-h2 {
+        font-size: 14px;
+      }
+
+      .tech-badge {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .meta-pill {
+        font-size: 9px;
+        padding: 2px 6px;
       }
     }
   </style>
@@ -2085,18 +2193,39 @@
   </div>
 
   <script>
+    // ── Disable zoom ──
     (function () {
-      const editor = document.getElementById('editor');
-      const lineNumbersEl = document.getElementById('lineNumbers');
-      const codeContent = editor.querySelector('.code-content');
+      // Block pinch-to-zoom
+      document.addEventListener('touchmove', function (e) {
+        if (e.touches && e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Block double-tap zoom
+      var lastTouchEnd = 0;
+      document.addEventListener('touchend', function (e) {
+        var now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+    })();
+
+    // ── Line numbers + scroll sync + line highlight ──
+    (function () {
+      var editor = document.getElementById('editor');
+      var lineNumbersEl = document.getElementById('lineNumbers');
+      var codeContent = editor.querySelector('.code-content');
 
       function generateLineNumbers() {
-        const contentHeight = codeContent.scrollHeight;
-        const lineHeight = 13 * 1.7;
-        const count = Math.ceil(contentHeight / lineHeight) + 10;
-        let html = '';
-        for (let i = 1; i <= count; i++) {
-          html += `<span class="line-number">${i}</span>`;
+        var contentHeight = codeContent.scrollHeight;
+        var lineHeight = 13 * 1.7;
+        var count = Math.ceil(contentHeight / lineHeight) + 10;
+        var html = '';
+        for (var i = 1; i <= count; i++) {
+          html += '<span class="line-number">' + i + '</span>';
         }
         lineNumbersEl.innerHTML = html;
       }
@@ -2104,12 +2233,14 @@
       generateLineNumbers();
 
       editor.addEventListener('scroll', function () {
-        lineNumbersEl.style.transform = `translateY(-${editor.scrollTop}px)`;
+        lineNumbersEl.style.transform = 'translateY(-' + editor.scrollTop + 'px)';
       });
 
-      document.querySelectorAll('.code-line').forEach(line => {
+      document.querySelectorAll('.code-line').forEach(function (line) {
         line.addEventListener('click', function () {
-          document.querySelectorAll('.code-line.highlighted').forEach(l => l.classList.remove('highlighted'));
+          document.querySelectorAll('.code-line.highlighted').forEach(function (l) {
+            l.classList.remove('highlighted');
+          });
           this.classList.add('highlighted');
         });
       });

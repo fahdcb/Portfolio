@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Diagnostic ADSL/VDSL2 — Portfolio</title>
   <meta name="description"
     content="Découvrez : Diagnostic ADSL/VDSL2. Portfolio de Fahd Cliquet-Benbrahim, étudiant en BUT Réseaux et Télécommunications (Cybersécurité) à l'IUT de Vélizy." />
@@ -41,6 +41,8 @@
     html {
       font-size: 16px;
       scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
@@ -49,6 +51,7 @@
       color: var(--black);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      touch-action: pan-x pan-y;
     }
 
     .category-page {
@@ -225,6 +228,7 @@
       align-items: center;
       gap: 8px;
       font-size: 13px;
+      flex-wrap: wrap;
     }
 
     .breadcrumb-inner a {
@@ -290,7 +294,7 @@
     }
 
     .project-hero h1 {
-      font-size: clamp(28px, 5vw, 48px);
+      font-size: clamp(22px, 5vw, 48px);
       font-weight: 700;
       line-height: 1.15;
       letter-spacing: -0.5px;
@@ -356,7 +360,7 @@
     }
 
     .proj-section h2 {
-      font-size: clamp(22px, 3vw, 32px);
+      font-size: clamp(20px, 3vw, 32px);
       font-weight: 700;
       line-height: 1.2;
       color: var(--black);
@@ -428,8 +432,15 @@
     }
 
     /* Architecture table */
+    .archi-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .archi-table {
       width: 100%;
+      min-width: 500px;
       border-collapse: collapse;
       font-size: 14px;
     }
@@ -695,6 +706,10 @@
       font-size: 13px;
       font-weight: 500;
       color: var(--black);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 220px;
     }
 
     .browser-tab-icon svg {
@@ -714,6 +729,13 @@
       padding: 6px 12px;
       font-size: 13px;
       color: var(--grey-600);
+      overflow: hidden;
+    }
+
+    .browser-url-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .browser-url-bar .browser-lock svg {
@@ -774,23 +796,11 @@
       margin-top: 24px;
     }
 
-    @media (max-width: 768px) {
-      .context-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .lab-images {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
       margin-top: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .lab-images {
-        grid-template-columns: 1fr;
-      }
     }
 
     .lab-img-card {
@@ -936,9 +946,32 @@
       color: var(--white);
     }
 
-    /* ── RESPONSIVE ── */
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+
+    /* ── ≤ 1024px ── */
+    @media (max-width: 1024px) {
+      .header-nav a {
+        padding: 0 12px;
+        font-size: 14px;
+      }
+    }
+
+    /* ── ≤ 900px ── */
+    @media (max-width: 900px) {
+      .header-supra {
+        display: none;
+      }
+    }
+
+    /* ── ≤ 768px ── */
     @media (max-width: 768px) {
       .header-nav {
+        display: none;
+      }
+
+      .header-action-btn:not(.cta) {
         display: none;
       }
 
@@ -950,8 +983,8 @@
         padding: 32px 16px 64px;
       }
 
-      .project-hero h1 {
-        font-size: 26px;
+      .context-layout {
+        grid-template-columns: 1fr;
       }
 
       .footer-nav-inner {
@@ -968,20 +1001,147 @@
       }
     }
 
-    @media (max-width: 480px) {
+    /* ── ≤ 600px ── */
+    @media (max-width: 600px) {
       .header-global-inner {
         padding: 0 16px;
         height: 56px;
+        gap: 16px;
+      }
+
+      .header-logo-text {
+        font-size: 18px;
+      }
+
+      .project-hero {
+        padding: 28px 16px;
+      }
+
+      .project-hero h1 {
+        font-size: 22px;
+      }
+
+      .project-hero-badge {
+        font-size: 11px;
       }
 
       .project-meta-pill {
         font-size: 12px;
+        padding: 5px 10px;
+      }
+
+      .project-body {
+        padding: 24px 16px 56px;
+      }
+
+      .proj-section {
+        padding: 28px 0;
+      }
+
+      .accroche-text {
+        font-size: 15px;
       }
 
       .tech-grid,
       .steps-grid,
       .tests-grid {
         grid-template-columns: 1fr;
+      }
+
+      .lab-images {
+        grid-template-columns: 1fr;
+      }
+
+      .lab-img-card img {
+        height: 180px;
+      }
+
+      .footer-nav-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding: 28px 16px;
+      }
+
+      .footer-terms-inner {
+        padding: 16px;
+      }
+
+      .footer-legal-links {
+        gap: 10px;
+      }
+    }
+
+    /* ── ≤ 480px ── */
+    @media (max-width: 480px) {
+      .header-global-inner {
+        padding: 0 12px;
+        height: 52px;
+      }
+
+      .header-logo-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .header-logo-text {
+        font-size: 16px;
+      }
+
+      .header-action-btn.cta {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .header-action-btn.cta svg {
+        display: none;
+      }
+
+      .project-hero h1 {
+        font-size: 20px;
+      }
+
+      .project-meta {
+        gap: 8px;
+      }
+
+      .project-meta-pill {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+
+      .tech-badge {
+        gap: 12px;
+        padding: 14px 14px;
+      }
+
+      .footer-nav-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── ≤ 380px ── */
+    @media (max-width: 380px) {
+      .project-hero h1 {
+        font-size: 18px;
+      }
+
+      .project-hero-badge {
+        font-size: 10px;
+        letter-spacing: 0.5px;
+      }
+
+      .obj-num {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+      }
+
+      .obj-text {
+        font-size: 14px;
+      }
+
+      .browser-tab {
+        max-width: 140px;
       }
     }
   </style>
@@ -1180,37 +1340,39 @@
       <div class="proj-section">
         <span class="proj-section-label">ARCHITECTURE</span>
         <h2>Architecture 3-tiers</h2>
-        <table class="archi-table">
-          <thead>
-            <tr>
-              <th>Couche</th>
-              <th>Technologie</th>
-              <th>Rôle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Front-end</td>
-              <td>Nginx + HTML/JS/Chart.js</td>
-              <td>Interface web, affichage des courbes, requêtes HTTP</td>
-            </tr>
-            <tr>
-              <td>Back-end</td>
-              <td>Python FastAPI (async)</td>
-              <td>API REST, proxy vers DSLAM et MongoDB</td>
-            </tr>
-            <tr>
-              <td>Base de données</td>
-              <td>MongoDB (NoSQL)</td>
-              <td>Stockage des profils de lignes en BSON</td>
-            </tr>
-            <tr>
-              <td>Connexion DSLAM</td>
-              <td>Paramiko / asyncssh</td>
-              <td>Connexion SSH, commandes CLI, parsing</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="archi-table-wrap">
+          <table class="archi-table">
+            <thead>
+              <tr>
+                <th>Couche</th>
+                <th>Technologie</th>
+                <th>Rôle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Front-end</td>
+                <td>Nginx + HTML/JS/Chart.js</td>
+                <td>Interface web, affichage des courbes, requêtes HTTP</td>
+              </tr>
+              <tr>
+                <td>Back-end</td>
+                <td>Python FastAPI (async)</td>
+                <td>API REST, proxy vers DSLAM et MongoDB</td>
+              </tr>
+              <tr>
+                <td>Base de données</td>
+                <td>MongoDB (NoSQL)</td>
+                <td>Stockage des profils de lignes en BSON</td>
+              </tr>
+              <tr>
+                <td>Connexion DSLAM</td>
+                <td>Paramiko / asyncssh</td>
+                <td>Connexion SSH, commandes CLI, parsing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1200&q=70&auto=format&fit=crop"
           alt="Serveurs et architecture réseau" class="section-img" style="height:260px;" />
         <p class="section-img-caption">Architecture serveur — back-end Python / FastAPI déployé sur Linux</p>
@@ -1457,6 +1619,22 @@
     </footer>
 
   </div>
+
+  <script>
+    /* ── Désactivation du zoom tactile ── */
+    // Bloquer le pinch-to-zoom (2 doigts)
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+
+    // Bloquer le double-tap zoom
+    var lastTap = 0;
+    document.addEventListener('touchend', function (e) {
+      var now = Date.now();
+      if (now - lastTap < 300) e.preventDefault();
+      lastTap = now;
+    }, { passive: false });
+  </script>
 </body>
 
 </html>

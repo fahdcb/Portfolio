@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Modulation AM & Translation de fréquence — Fahd</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -40,11 +40,25 @@
             background: var(--ink);
             color: var(--white);
             overflow-x: hidden;
-            cursor: none;
         }
 
-        /* ── CUSTOM CURSOR ── */
+        /* ── CUSTOM CURSOR (desktop only) ── */
+        @media (pointer: fine) {
+            body {
+                cursor: none;
+            }
+
+            #cursor {
+                display: block;
+            }
+
+            #cursor-ring {
+                display: block;
+            }
+        }
+
         #cursor {
+            display: none;
             position: fixed;
             width: 14px;
             height: 14px;
@@ -58,6 +72,7 @@
         }
 
         #cursor-ring {
+            display: none;
             position: fixed;
             width: 40px;
             height: 40px;
@@ -87,8 +102,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 48px;
+            padding: 16px 48px;
             mix-blend-mode: normal;
+            flex-wrap: wrap;
+            gap: 10px;
+            backdrop-filter: blur(6px);
+            background: rgba(14, 12, 26, 0.5);
         }
 
         .nav-logo {
@@ -114,12 +133,14 @@
             border-radius: 999px;
             letter-spacing: 0.05em;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-back {
@@ -139,6 +160,7 @@
             gap: 7px;
             box-shadow: 0 0 18px rgba(123, 47, 255, 0.55), 0 0 36px rgba(255, 60, 172, 0.25);
             transition: transform .2s, box-shadow .2s;
+            white-space: nowrap;
         }
 
         .btn-back:hover {
@@ -149,6 +171,7 @@
         .btn-back svg {
             width: 14px;
             height: 14px;
+            flex-shrink: 0;
             transition: transform .2s;
         }
 
@@ -160,11 +183,11 @@
         .hero {
             position: relative;
             z-index: 1;
-            min-height: 100vh;
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 0 48px 80px;
+            padding: 100px 48px 80px;
         }
 
         .hero-tag {
@@ -185,12 +208,13 @@
             width: 32px;
             height: 1px;
             background: var(--lime);
+            flex-shrink: 0;
         }
 
         .hero-title {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: clamp(3rem, 8vw, 7rem);
+            font-size: clamp(2.4rem, 8vw, 7rem);
             line-height: 0.95;
             letter-spacing: -0.04em;
             max-width: 900px;
@@ -248,6 +272,7 @@
             backdrop-filter: blur(8px);
             background: rgba(255, 255, 255, 0.04);
             transition: border-color .2s, color .2s;
+            white-space: nowrap;
         }
 
         .chip:hover {
@@ -272,6 +297,7 @@
             background: rgba(245, 240, 232, 0.2);
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .scroll-hint-line::after {
@@ -358,6 +384,7 @@
             align-items: baseline;
             gap: 20px;
             margin-bottom: 48px;
+            flex-wrap: wrap;
         }
 
         .s-num {
@@ -365,11 +392,12 @@
             font-size: 11px;
             color: var(--lime);
             letter-spacing: 0.1em;
+            flex-shrink: 0;
         }
 
         .s-title {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-size: clamp(1.5rem, 3.5vw, 2.8rem);
             font-weight: 800;
             letter-spacing: -0.03em;
         }
@@ -378,6 +406,7 @@
             flex: 1;
             height: 1px;
             background: rgba(245, 240, 232, 0.08);
+            min-width: 20px;
         }
 
         /* ── CONTEXTE SECTION ── */
@@ -393,7 +422,7 @@
         }
 
         .contexte-text {
-            font-size: 17px;
+            font-size: 16px;
             line-height: 1.75;
             color: rgba(245, 240, 232, 0.7);
         }
@@ -569,8 +598,6 @@
         }
 
         .tech-emoji {
-            font-size: 28px;
-            line-height: 1;
             width: 52px;
             height: 52px;
             border-radius: 14px;
@@ -655,7 +682,7 @@
 
         .flow-node {
             flex: 1;
-            padding: 32px 20px;
+            padding: 28px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -663,6 +690,7 @@
             text-align: center;
             position: relative;
             transition: background .2s;
+            min-width: 0;
         }
 
         .flow-node:hover {
@@ -681,14 +709,15 @@
         }
 
         .flow-icon {
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 4px;
+            flex-shrink: 0;
         }
 
         .flow-icon.e {
@@ -709,15 +738,17 @@
 
         .flow-label {
             font-family: 'Syne', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
+            word-break: break-word;
         }
 
         .flow-sub {
-            font-size: 11px;
+            font-size: 10px;
             color: rgba(245, 240, 232, 0.35);
             font-family: 'DM Mono', monospace;
             letter-spacing: 0.05em;
+            word-break: break-word;
         }
 
         .flow-arrow-badge {
@@ -770,6 +801,7 @@
             height: 120px;
             border-radius: 50%;
             opacity: 0.08;
+            pointer-events: none;
         }
 
         .step-card.s1 .step-corner {
@@ -848,7 +880,7 @@
 
         .formula {
             flex: 1;
-            min-width: 260px;
+            min-width: 200px;
             background: var(--ink2);
             border-radius: 14px;
             padding: 20px 24px;
@@ -858,6 +890,7 @@
             border-left: 3px solid var(--cyan);
             line-height: 1.8;
             position: relative;
+            word-break: break-word;
         }
 
         .formula::before {
@@ -889,11 +922,13 @@
             padding: 14px 20px;
             background: rgba(255, 255, 255, 0.03);
             border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+            gap: 12px;
         }
 
         .r-dots {
             display: flex;
             gap: 7px;
+            flex-shrink: 0;
         }
 
         .r-dot {
@@ -921,6 +956,10 @@
             background: rgba(255, 255, 255, 0.04);
             padding: 5px 16px;
             border-radius: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
         }
 
         .r-url span {
@@ -934,7 +973,7 @@
             justify-content: center;
             flex-direction: column;
             gap: 16px;
-            padding: 60px;
+            padding: 60px 24px;
         }
 
         .r-placeholder-icon {
@@ -958,6 +997,7 @@
             font-size: 12px;
             color: rgba(245, 240, 232, 0.25);
             letter-spacing: 0.1em;
+            text-align: center;
         }
 
         .r-blink {
@@ -1026,21 +1066,43 @@
             transform: none;
         }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 900px) {
+        /* ── RESPONSIVE — 1100px ── */
+        @media (max-width: 1100px) {
+            .tech-bento {
+                grid-template-columns: repeat(3, 1fr);
+            }
 
-            nav,
-            main,
+            .tech-item.featured {
+                grid-column: span 3;
+            }
+
+            .obj-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* ── RESPONSIVE — 900px ── */
+        @media (max-width: 900px) {
+            nav {
+                padding: 14px 24px;
+            }
+
+            main {
+                padding: 0 24px 80px;
+            }
+
             footer {
-                padding-left: 24px;
-                padding-right: 24px;
+                margin: 0 24px;
             }
 
             .hero {
-                padding: 0 24px 64px;
+                padding: 100px 24px 64px;
             }
 
-            .contexte-grid,
+            .contexte-grid {
+                grid-template-columns: 1fr;
+            }
+
             .steps-pair {
                 grid-template-columns: 1fr;
             }
@@ -1056,15 +1118,65 @@
             .tech-item.featured {
                 grid-column: span 2;
             }
+
+            .flow-diagram {
+                flex-wrap: wrap;
+            }
+
+            .flow-node {
+                flex-basis: 50%;
+                min-width: 50%;
+            }
+
+            .flow-node+.flow-node::before {
+                display: none;
+            }
+
+            .flow-arrow-badge {
+                display: none;
+            }
         }
 
+        /* ── RESPONSIVE — 600px ── */
         @media (max-width: 600px) {
+            nav {
+                padding: 12px 16px;
+            }
+
+            .nav-pill {
+                display: none;
+            }
+
+            main {
+                padding: 0 16px 64px;
+            }
+
+            footer {
+                margin: 0 16px;
+            }
+
+            .hero {
+                padding: 90px 16px 48px;
+            }
+
             .hero-chips {
                 display: none;
             }
 
+            .hero-desc {
+                font-size: 14px;
+            }
+
             .obj-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .obj-card:nth-child(1) {
+                border-radius: 20px 20px 4px 4px;
+            }
+
+            .obj-card:nth-child(5) {
+                border-radius: 4px 4px 20px 20px;
             }
 
             .tech-bento {
@@ -1078,10 +1190,65 @@
 
             .flow-diagram {
                 flex-direction: column;
+                border-radius: 16px;
             }
 
-            .flow-node+.flow-node::before {
+            .flow-node {
+                width: 100%;
+                flex-basis: auto;
+            }
+
+            .steps-pair {
+                grid-template-columns: 1fr;
+            }
+
+            .step-card {
+                padding: 24px 20px;
+            }
+
+            .formulas-strip {
+                flex-direction: column;
+            }
+
+            .formula {
+                min-width: unset;
+            }
+
+            .results-chrome {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .r-url {
+                font-size: 10px;
+            }
+
+            .results-body {
+                padding: 40px 16px;
+            }
+
+            .s-header {
+                gap: 12px;
+            }
+
+            .s-line {
                 display: none;
+            }
+
+            .scroll-hint {
+                display: none;
+            }
+        }
+
+        /* ── RESPONSIVE — 400px ── */
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 2rem;
+                letter-spacing: -0.03em;
+            }
+
+            .hero-title .line-2 {
+                -webkit-text-stroke: 1.5px var(--white);
             }
         }
     </style>
@@ -1183,7 +1350,8 @@
                     <div class="obj-bar"></div>
                     <div class="obj-num">01</div>
                     <p class="obj-text">Modéliser mathématiquement la <strong>modulation AM</strong> et la
-                        <strong>démodulation synchrone</strong></p>
+                        <strong>démodulation synchrone</strong>
+                    </p>
                 </div>
                 <div class="obj-card">
                     <div class="obj-bar"></div>
@@ -1370,7 +1538,7 @@
                         <span class="r-dot r-dot-g"></span>
                     </div>
                     <div class="r-url"><span>portfolio.fahd.dev</span>/telecoms/modulation-am</div>
-                    <div style="width:60px"></div>
+                    <div style="width:60px;flex-shrink:0"></div>
                 </div>
                 <div class="results-body">
                     <div class="r-placeholder-icon">
@@ -1394,29 +1562,42 @@
     </footer>
 
     <script>
-        /* ── CURSOR ── */
-        const cur = document.getElementById('cursor');
-        const ring = document.getElementById('cursor-ring');
-        let rx = 0, ry = 0, mx = 0, my = 0;
-        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
-        (function animRing() {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            ring.style.left = rx + 'px';
-            ring.style.top = ry + 'px';
-            requestAnimationFrame(animRing);
-        })();
-        document.querySelectorAll('a, button, .obj-card, .tech-item, .chip').forEach(el => {
-            el.addEventListener('mouseenter', () => { cur.style.width = '30px'; cur.style.height = '30px'; ring.style.width = '60px'; ring.style.height = '60px'; });
-            el.addEventListener('mouseleave', () => { cur.style.width = '14px'; cur.style.height = '14px'; ring.style.width = '40px'; ring.style.height = '40px'; });
-        });
+        /* ── CURSOR (desktop only) ── */
+        if (window.matchMedia('(pointer: fine)').matches) {
+            const cur = document.getElementById('cursor');
+            const ring = document.getElementById('cursor-ring');
+            let rx = 0, ry = 0, mx = 0, my = 0;
+            document.addEventListener('mousemove', e => {
+                mx = e.clientX; my = e.clientY;
+                cur.style.left = mx + 'px';
+                cur.style.top = my + 'px';
+            });
+            (function animRing() {
+                rx += (mx - rx) * 0.12;
+                ry += (my - ry) * 0.12;
+                ring.style.left = rx + 'px';
+                ring.style.top = ry + 'px';
+                requestAnimationFrame(animRing);
+            })();
+            document.querySelectorAll('a, button, .obj-card, .tech-item, .chip').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cur.style.width = '30px'; cur.style.height = '30px';
+                    ring.style.width = '60px'; ring.style.height = '60px';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cur.style.width = '14px'; cur.style.height = '14px';
+                    ring.style.width = '40px'; ring.style.height = '40px';
+                });
+            });
+        }
 
         /* ── BG CANVAS (floating orbs) ── */
         const cvs = document.getElementById('bg-canvas');
         const ctx = cvs.getContext('2d');
         let W, H;
         function resize() { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; }
-        resize(); window.addEventListener('resize', resize);
+        resize();
+        window.addEventListener('resize', resize);
 
         const orbs = [
             { x: 0.8, y: 0.1, r: 500, c: '#7b2fff', s: 0.00008 },
@@ -1458,9 +1639,11 @@
         const sctx = sc.getContext('2d');
         function resizeSC() { sc.width = sc.offsetWidth; sc.height = sc.offsetHeight; }
         resizeSC();
+        window.addEventListener('resize', resizeSC);
         let st = 0;
         function drawSpectrum() {
             const sw = sc.width, sh = sc.height;
+            if (!sw || !sh) { requestAnimationFrame(drawSpectrum); return; }
             sctx.clearRect(0, 0, sw, sh);
             st += 0.02;
 
@@ -1472,15 +1655,16 @@
 
             // Spectrum shape — carrier + sidebands
             const bands = [
-                { fc: 0.5, bw: 0.03, amp: 0.9, col: '#00f0ff' },  // carrier
-                { fc: 0.38, bw: 0.12, amp: 0.55, col: '#ff3cac' }, // lower sideband
-                { fc: 0.62, bw: 0.12, amp: 0.55, col: '#ff3cac' }, // upper sideband
+                { fc: 0.5, bw: 0.03, amp: 0.9, col: '#00f0ff' },
+                { fc: 0.38, bw: 0.12, amp: 0.55, col: '#ff3cac' },
+                { fc: 0.62, bw: 0.12, amp: 0.55, col: '#ff3cac' },
             ];
 
             bands.forEach(b => {
                 const cx = b.fc * sw;
                 const bwPx = b.bw * sw;
-                const grad = sctx.createLinearGradient(cx, sh, cx, sh - b.amp * sh * (b.fc === 0.5 ? 1 + 0.04 * Math.sin(st * 3) : 0.85 + 0.06 * Math.sin(st * 2 + 1)));
+                const ampH = b.amp * sh * (b.fc === 0.5 ? 1 + 0.04 * Math.sin(st * 3) : 0.85 + 0.06 * Math.sin(st * 2 + 1));
+                const grad = sctx.createLinearGradient(cx, sh, cx, sh - ampH);
                 grad.addColorStop(0, b.col + '00');
                 grad.addColorStop(1, b.col + 'bb');
                 sctx.fillStyle = grad;
@@ -1495,7 +1679,6 @@
                 sctx.closePath();
                 sctx.fill();
 
-                // Stroke line
                 sctx.strokeStyle = b.col + 'cc';
                 sctx.lineWidth = 1.5;
                 sctx.beginPath();
@@ -1522,7 +1705,7 @@
 
         /* ── SCROLL REVEAL ── */
         const io = new IntersectionObserver(entries => {
-            entries.forEach((e, i) => {
+            entries.forEach(e => {
                 if (e.isIntersecting) {
                     setTimeout(() => e.target.classList.add('in'), 80);
                 }

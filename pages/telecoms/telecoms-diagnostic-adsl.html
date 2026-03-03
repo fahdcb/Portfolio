@@ -1,344 +1,1462 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Diagnostic ADSL/VDSL2 — Portfolio</title>
-    <meta name="description"
-        content="Découvrez : Diagnostic ADSL/VDSL2. Portfolio de Fahd Cliquet-Benbrahim, étudiant en BUT Réseaux et Télécommunications (Cybersécurité) à l'IUT de Vélizy." />
-    <meta name="author" content="Fahd Cliquet-Benbrahim" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="../../assets/css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostic ADSL/VDSL2 — Portfolio</title>
+  <meta name="description"
+    content="Découvrez : Diagnostic ADSL/VDSL2. Portfolio de Fahd Cliquet-Benbrahim, étudiant en BUT Réseaux et Télécommunications (Cybersécurité) à l'IUT de Vélizy." />
+  <meta name="author" content="Fahd Cliquet-Benbrahim" />
+  <style>
+    /* ============================================================
+       Orange Design System — Portfolio Page
+       Primary: #ff7900 | Black: #000 | White: #fff
+    ============================================================ */
 
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --orange: #ff7900;
+      --orange-dark: #d45f00;
+      --orange-light: #fff2e6;
+      --black: #000000;
+      --white: #ffffff;
+      --grey-100: #f6f6f6;
+      --grey-200: #eeeeee;
+      --grey-400: #999999;
+      --grey-600: #666666;
+      --grey-800: #333333;
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --max-w: 1280px;
+      --radius: 4px;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .category-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    #site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--black);
+      border-bottom: 2px solid var(--orange);
+    }
+
+    .header-supra {
+      background: var(--black);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header-supra-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      gap: 24px;
+    }
+
+    .header-supra a {
+      font-size: 13px;
+      color: var(--grey-400);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .header-supra a:hover {
+      color: var(--white);
+    }
+
+    .header-supra a.active {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .header-global {
+      background: var(--black);
+    }
+
+    .header-global-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 64px;
+      gap: 32px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .header-logo-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-logo-mark svg {
+      fill: var(--white);
+      width: 22px;
+      height: 22px;
+    }
+
+    .header-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+    }
+
+    .header-nav a {
+      color: var(--grey-200);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 400;
+      padding: 0 16px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      border-bottom: 3px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+
+    .header-nav a:hover {
+      color: var(--white);
+      border-color: var(--orange);
+    }
+
+    .header-nav a.active {
+      color: var(--white);
+      border-color: var(--orange);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .header-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      transition: background .2s;
+    }
+
+    .header-action-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .header-action-btn.cta {
+      background: var(--orange);
+      color: var(--white);
+    }
+
+    .header-action-btn.cta:hover {
+      background: var(--orange-dark);
+    }
+
+    .header-action-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb-bar {
+      background: var(--grey-100);
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .breadcrumb-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .breadcrumb-inner a {
+      color: var(--grey-600);
+      text-decoration: none;
+    }
+
+    .breadcrumb-inner a:hover {
+      color: var(--orange);
+      text-decoration: underline;
+    }
+
+    .breadcrumb-inner .sep {
+      color: var(--grey-400);
+      font-size: 12px;
+    }
+
+    .breadcrumb-inner .current {
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    /* ── PROJECT HERO ── */
+    .project-hero {
+      background: var(--black);
+      color: var(--white);
+      padding: 56px 24px;
+      border-bottom: 4px solid var(--orange);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1400&q=60&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.18;
+      z-index: 0;
+    }
+
+    .project-hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 5px 12px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    .project-hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+      max-width: 900px;
+    }
+
+    .gradient-text {
+      color: var(--orange);
+    }
+
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .project-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--grey-200);
+      font-size: 13px;
+      font-weight: 400;
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    .project-meta-pill svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    /* ── PROJECT BODY ── */
+    .project-body {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      width: 100%;
+    }
+
+    .proj-section {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .proj-section:last-child {
+      border-bottom: none;
+    }
+
+    .proj-section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+
+    .proj-section h2 {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--black);
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .accroche-text {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--grey-800);
+      max-width: 820px;
+    }
+
+    .accroche-text strong {
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /* Objectives */
+    .obj-group-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-600);
+      margin: 24px 0 12px;
+    }
+
+    .objectives-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .objectives-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--grey-100);
+      border-left: 3px solid var(--orange);
+    }
+
+    .obj-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+
+    .obj-text {
+      font-size: 15px;
+      color: var(--grey-800);
+      line-height: 1.5;
+      padding-top: 2px;
+    }
+
+    .obj-text strong {
+      color: var(--black);
+    }
+
+    /* Architecture table */
+    .archi-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .archi-table thead tr {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .archi-table th {
+      padding: 14px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .archi-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--grey-200);
+      color: var(--grey-800);
+      vertical-align: top;
+    }
+
+    .archi-table tr:nth-child(even) td {
+      background: var(--grey-100);
+    }
+
+    .archi-table tr:first-child td {
+      border-top: 2px solid var(--orange);
+    }
+
+    .archi-table td:first-child {
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    /* Tech grid */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .tech-badge {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--white);
+      border: 1px solid var(--grey-200);
+      border-top: 3px solid var(--orange);
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .tech-badge:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .tech-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: var(--grey-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--orange);
+      border-radius: var(--radius);
+    }
+
+    .tech-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .tech-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .tech-desc {
+      font-size: 12px;
+      color: var(--grey-600);
+      line-height: 1.4;
+    }
+
+    /* Steps grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .step-card {
+      padding: 24px;
+      background: var(--white);
+      border: 1px solid var(--grey-200);
+      border-top: 3px solid var(--orange);
+      transition: box-shadow .2s;
+    }
+
+    .step-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .step-card-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .step-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--grey-600);
+      line-height: 1.6;
+    }
+
+    .step-card strong {
+      color: var(--black);
+    }
+
+    /* Tests grid */
+    .tests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .test-card {
+      padding: 20px;
+      background: var(--white);
+      border: 1px solid var(--grey-200);
+      border-left: 4px solid var(--orange);
+    }
+
+    .test-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 10px;
+    }
+
+    .test-card p {
+      font-size: 14px;
+      color: var(--grey-600);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .test-card strong {
+      color: var(--black);
+    }
+
+    .test-card code {
+      background: var(--grey-100);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 13px;
+      color: var(--black);
+      font-family: "Courier New", monospace;
+    }
+
+    .test-highlight {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--orange);
+      background: var(--orange-light);
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    .inline-14c80d {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--grey-800);
+      margin-bottom: 16px;
+    }
+
+    .inline-14c80d strong {
+      color: var(--black);
+    }
+
+    .inline-f4e330 {
+      margin-top: 16px;
+    }
+
+    /* Browser window */
+    .browser-window {
+      border: 1px solid var(--grey-200);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+      margin-top: 8px;
+    }
+
+    .browser-chrome {
+      background: var(--grey-100);
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .browser-tabs {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px 0;
+      gap: 8px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 5px;
+      margin-right: 8px;
+    }
+
+    .browser-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .browser-dot--red {
+      background: #ff5f57;
+    }
+
+    .browser-dot--yellow {
+      background: #febc2e;
+    }
+
+    .browser-dot--green {
+      background: #28c840;
+    }
+
+    .browser-tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--white);
+      border: 1px solid var(--grey-200);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    .browser-tab-icon svg {
+      width: 14px;
+      height: 14px;
+      color: var(--orange);
+    }
+
+    .browser-url-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--grey-200);
+      border-radius: 4px;
+      margin: 8px 12px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: var(--grey-600);
+    }
+
+    .browser-url-bar .browser-lock svg {
+      width: 12px;
+      height: 12px;
+      color: #28c840;
+    }
+
+    .browser-url-text strong {
+      color: var(--black);
+    }
+
+    .browser-content {
+      background: var(--grey-100);
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .browser-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--grey-400);
+      font-size: 14px;
+    }
+
+    .browser-placeholder svg {
+      width: 40px;
+      height: 40px;
+      opacity: 0.4;
+    }
+
+    /* ── SECTION IMAGES ── */
+    .section-img {
+      width: 100%;
+      border-radius: var(--radius);
+      margin-top: 24px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid var(--grey-200);
+    }
+
+    .section-img-caption {
+      font-size: 12px;
+      color: var(--grey-400);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .context-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .context-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lab-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .lab-images {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lab-img-card {
+      border: 1px solid var(--grey-200);
+      border-top: 3px solid var(--orange);
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .lab-img-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lab-img-label {
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-800);
+      background: var(--grey-100);
+    }
+
+    .browser-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    #site-footer {
+      background: var(--black);
+      color: var(--white);
+      margin-top: auto;
+    }
+
+    .footer-nav-bar {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 40px 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 32px;
+    }
+
+    .footer-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-400);
+      margin-bottom: 16px;
+    }
+
+    .footer-col-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col-links a {
+      color: var(--grey-200);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s;
+    }
+
+    .footer-col-links a:hover {
+      color: var(--orange);
+    }
+
+    .footer-terms-bar {
+      background: var(--black);
+    }
+
+    .footer-terms-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-terms-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .footer-terms-logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-terms-logo-mark svg {
+      fill: var(--white);
+      width: 16px;
+      height: 16px;
+    }
+
+    .footer-terms-logo-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .footer-copyright {
+      font-size: 13px;
+      color: var(--grey-400);
+      margin-left: auto;
+    }
+
+    .footer-legal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .footer-legal-links a {
+      color: var(--grey-400);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color .2s;
+    }
+
+    .footer-legal-links a:hover {
+      color: var(--white);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .header-nav {
+        display: none;
+      }
+
+      .project-hero {
+        padding: 36px 16px;
+      }
+
+      .project-body {
+        padding: 32px 16px 64px;
+      }
+
+      .project-hero h1 {
+        font-size: 26px;
+      }
+
+      .footer-nav-inner {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-terms-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-copyright {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-global-inner {
+        padding: 0 16px;
+        height: 56px;
+      }
+
+      .project-meta-pill {
+        font-size: 12px;
+      }
+
+      .tech-grid,
+      .steps-grid,
+      .tests-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
-<body class="theme-telecoms">
+<body>
+  <div class="category-page">
 
-    <div class="bg-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-
-    <div class="category-page">
-
-        <script src="../../assets/js/header.js" defer></script>
-
-        <!-- ══════════ PROJECT HERO ══════════ -->
-        <div class="project-hero">
-            <span class="project-hero-badge">Télécoms &amp; Signal — 2ème Année</span>
-            <h1>Application web full-stack de<br />diagnostic <span class="gradient-text">ADSL/VDSL2</span></h1>
-            <div class="project-meta">
-                <span class="project-meta-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" />
-                        <path d="M8 21h8M12 17v4" />
-                    </svg>
-                    SAE 3.2
-                </span>
-                <span class="project-meta-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
-                    BUT R&amp;T — Semestre 3
-                </span>
-                <span class="project-meta-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                    49h (16h + 30h + 3h)
-                </span>
-                <span class="project-meta-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                    Groupe de 3
-                </span>
-                <span class="project-meta-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    IUT Vélizy — UVSQ
-                </span>
+    <!-- ══════════ HEADER ══════════ -->
+    <header id="site-header">
+      <div class="header-supra">
+        <div class="header-supra-inner">
+          <a href="#" class="active">Particuliers</a>
+          <a href="#">Professionnels</a>
+          <a href="#">Entreprises</a>
+        </div>
+      </div>
+      <nav class="header-global" aria-label="Navigation principale">
+        <div class="header-global-inner">
+          <a href="/" class="header-logo" aria-label="Orange — Accueil">
+            <div class="header-logo-mark">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="20" cy="20" r="18" fill="none" stroke="white" stroke-width="3" />
+                <text x="20" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="white"
+                  font-family="Helvetica Neue,Arial,sans-serif">O</text>
+              </svg>
             </div>
+            <span class="header-logo-text">Orange</span>
+          </a>
+          <nav class="header-nav" aria-label="Liens principaux">
+            <a href="#">Téléphones</a>
+            <a href="#">Box &amp; TV</a>
+            <a href="#">Forfaits mobile</a>
+            <a href="#" class="active">Réseau &amp; Techno</a>
+            <a href="#">Assistance</a>
+          </nav>
+          <div class="header-actions">
+            <a href="#" class="header-action-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              Rechercher
+            </a>
+            <a href="#" onclick="history.back(); return false;" class="header-action-btn cta">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+              </svg>
+              Retour
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ══════════ BREADCRUMB ══════════ -->
+    <div class="breadcrumb-bar">
+      <div class="breadcrumb-inner">
+        <a href="../../index.html">Accueil</a>
+        <span class="sep">›</span>
+        <a href="#">Télécoms &amp; Signal</a>
+        <span class="sep">›</span>
+        <span class="current">Diagnostic ADSL/VDSL2</span>
+      </div>
+    </div>
+
+    <!-- ══════════ PROJECT HERO ══════════ -->
+    <div class="project-hero">
+      <div class="project-hero-bg" aria-hidden="true"></div>
+      <div class="project-hero-inner">
+        <span class="project-hero-badge">Télécoms &amp; Signal — 2ème Année</span>
+        <h1>Application web full-stack de<br />diagnostic <span class="gradient-text">ADSL/VDSL2</span></h1>
+        <div class="project-meta">
+          <span class="project-meta-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg>
+            SAE 3.2
+          </span>
+          <span class="project-meta-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c3 3 9 3 12 0v-5" />
+            </svg>
+            BUT R&amp;T — Semestre 3
+          </span>
+          <span class="project-meta-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            49h (16h + 30h + 3h)
+          </span>
+          <span class="project-meta-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Groupe de 3
+          </span>
+          <span class="project-meta-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            IUT Vélizy — UVSQ
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ CONTENT ══════════ -->
+    <div class="project-body">
+
+      <!-- Contexte -->
+      <div class="proj-section">
+        <span class="proj-section-label">CONTEXTE</span>
+        <h2>Un vrai problème opérateur</h2>
+        <div class="context-layout">
+          <div>
+            <p class="accroche-text">
+              Chez <strong>Orange</strong>, des équipes entières sont dédiées à détecter les perturbateurs
+              électromagnétiques (moteurs d'ascenseur, alimentations défectueuses…) qui dégradent les lignes
+              ADSL des abonnés et font chuter les débits. Ce projet répond à une vraie problématique opérateur :
+              construire une <strong>application web complète</strong> permettant à un technicien de se connecter
+              à n'importe quel DSLAM, d'analyser les paramètres de la ligne, et de comparer son état actuel
+              avec son état normal stocké en <strong>base de données</strong>.
+            </p>
+          </div>
+          <div>
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=700&q=70&auto=format&fit=crop"
+              alt="Câbles réseau et infrastructure télécoms" class="section-img" style="height:220px;" />
+            <p class="section-img-caption">Infrastructure télécom — câblage cuivre ADSL</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Objectifs -->
+      <div class="proj-section">
+        <span class="proj-section-label">OBJECTIFS</span>
+        <h2>Ce qu'on devait réaliser</h2>
+
+        <div class="obj-group-title">Côté Télécoms</div>
+        <ul class="objectives-list">
+          <li>
+            <span class="obj-num">1</span>
+            <span class="obj-text">Comprendre la modulation <strong>OFDM/DMT</strong> utilisée en ADSL/VDSL2</span>
+          </li>
+          <li>
+            <span class="obj-num">2</span>
+            <span class="obj-text">Analyser les 4 paramètres de ligne : <strong>QLN, SNR, HLOG</strong> et
+              <strong>BitAlloc</strong></span>
+          </li>
+          <li>
+            <span class="obj-num">3</span>
+            <span class="obj-text">Étudier l'impact de <strong>perturbateurs électromagnétiques</strong> sur une ligne
+              de 2 km réelle</span>
+          </li>
+        </ul>
+
+        <div class="obj-group-title">Côté Informatique</div>
+        <ul class="objectives-list">
+          <li>
+            <span class="obj-num">4</span>
+            <span class="obj-text">Concevoir une <strong>API REST asynchrone</strong> avec FastAPI et Python</span>
+          </li>
+          <li>
+            <span class="obj-num">5</span>
+            <span class="obj-text">Développer le front-end en <strong>HTML/CSS/JavaScript</strong> avec Chart.js pour
+              l'affichage des courbes</span>
+          </li>
+          <li>
+            <span class="obj-num">6</span>
+            <span class="obj-text">Implémenter une base de données <strong>NoSQL MongoDB</strong> pour stocker les
+              profils de lignes</span>
+          </li>
+          <li>
+            <span class="obj-num">7</span>
+            <span class="obj-text">Automatiser la connexion <strong>SSH aux DSLAM</strong> avec Paramiko/asyncssh</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Architecture -->
+      <div class="proj-section">
+        <span class="proj-section-label">ARCHITECTURE</span>
+        <h2>Architecture 3-tiers</h2>
+        <table class="archi-table">
+          <thead>
+            <tr>
+              <th>Couche</th>
+              <th>Technologie</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Front-end</td>
+              <td>Nginx + HTML/JS/Chart.js</td>
+              <td>Interface web, affichage des courbes, requêtes HTTP</td>
+            </tr>
+            <tr>
+              <td>Back-end</td>
+              <td>Python FastAPI (async)</td>
+              <td>API REST, proxy vers DSLAM et MongoDB</td>
+            </tr>
+            <tr>
+              <td>Base de données</td>
+              <td>MongoDB (NoSQL)</td>
+              <td>Stockage des profils de lignes en BSON</td>
+            </tr>
+            <tr>
+              <td>Connexion DSLAM</td>
+              <td>Paramiko / asyncssh</td>
+              <td>Connexion SSH, commandes CLI, parsing</td>
+            </tr>
+          </tbody>
+        </table>
+        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1200&q=70&auto=format&fit=crop"
+          alt="Serveurs et architecture réseau" class="section-img" style="height:260px;" />
+        <p class="section-img-caption">Architecture serveur — back-end Python / FastAPI déployé sur Linux</p>
+      </div>
+
+      <!-- Technologies -->
+      <div class="proj-section">
+        <span class="proj-section-label">TECHNOLOGIES</span>
+        <h2>Outils utilisés</h2>
+        <div class="tech-grid">
+          <div class="tech-badge">
+            <div class="tech-icon">Py</div>
+            <div class="tech-info">
+              <span class="tech-name">Python</span>
+              <span class="tech-desc">asyncio, FastAPI, Paramiko, asyncssh, Matplotlib, Re</span>
+            </div>
+          </div>
+          <div class="tech-badge">
+            <div class="tech-icon">JS</div>
+            <div class="tech-info">
+              <span class="tech-name">JavaScript</span>
+              <span class="tech-desc">fetch, événementiel, Chart.js</span>
+            </div>
+          </div>
+          <div class="tech-badge">
+            <div class="tech-icon">MDB</div>
+            <div class="tech-info">
+              <span class="tech-name">MongoDB</span>
+              <span class="tech-desc">NoSQL orientée document, BSON/JSON</span>
+            </div>
+          </div>
+          <div class="tech-badge">
+            <div class="tech-icon">Ngx</div>
+            <div class="tech-info">
+              <span class="tech-name">Nginx</span>
+              <span class="tech-desc">Serveur web + proxy inverse</span>
+            </div>
+          </div>
+          <div class="tech-badge">
+            <div class="tech-icon">Lin</div>
+            <div class="tech-info">
+              <span class="tech-name">Linux</span>
+              <span class="tech-desc">Serveur SSH + RDP, VM bridgée</span>
+            </div>
+          </div>
+          <div class="tech-badge">
+            <div class="tech-icon">📟</div>
+            <div class="tech-info">
+              <span class="tech-name">DSLAM Zyxel VES1724-56</span>
+              <span class="tech-desc">Équipement réseau réel, CLI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fonctionnement -->
+      <div class="proj-section">
+        <span class="proj-section-label">FONCTIONNEMENT</span>
+        <h2>Parcours utilisateur</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-card-num">Étape 01</div>
+            <h3>Sélection du DSLAM</h3>
+            <p>Menu déroulant alimenté dynamiquement via <strong>GET /api/dslams</strong>. Le technicien choisit
+              l'équipement à interroger.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-num">Étape 02</div>
+            <h3>Choix des paramètres</h3>
+            <p>Sélection de la ligne, du paramètre (<strong>QLN / SNR / HLOG / BitAlloc / Tous</strong>) et du mode :
+              analyse, comparaison ou enregistrement.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-num">Étape 03</div>
+            <h3>Affichage des résultats</h3>
+            <p>Graphique <strong>Chart.js</strong> dans le navigateur avec support multi-axes pour afficher les 4
+              paramètres simultanément.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tests sur ligne réelle -->
+      <div class="proj-section">
+        <span class="proj-section-label">TESTS EN LABO</span>
+        <h2>Tests sur ligne réelle</h2>
+        <p class="inline-14c80d">
+          C'est ce qui distingue ce projet — travail sur du <strong>matériel réel</strong> en labo avec une
+          ligne ADSL2+ simulée à l'aide de bobines de câble de 1 km (2 km total).
+        </p>
+
+        <div class="lab-images">
+          <div class="lab-img-card">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=70&auto=format&fit=crop"
+              alt="Équipement électronique en laboratoire" />
+            <div class="lab-img-label">Matériel de labo — câblage et équipements</div>
+          </div>
+          <div class="lab-img-card">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=700&q=70&auto=format&fit=crop"
+              alt="Mesures et signaux réseau" />
+            <div class="lab-img-label">Analyse de signal — perturbateurs EM</div>
+          </div>
         </div>
 
-        <!-- ══════════ CONTENT ══════════ -->
-        <div class="project-body">
-
-            <!-- Contexte -->
-            <div class="proj-section">
-                <span class="proj-section-label">CONTEXTE</span>
-                <h2>Un vrai problème opérateur</h2>
-                <p class="accroche-text">
-                    Chez <strong>Orange</strong>, des équipes entières sont dédiées à détecter les perturbateurs
-                    électromagnétiques (moteurs d'ascenseur, alimentations défectueuses…) qui dégradent les lignes
-                    ADSL des abonnés et font chuter les débits. Ce projet répond à une vraie problématique opérateur :
-                    construire une <strong>application web complète</strong> permettant à un technicien de se connecter
-                    à n'importe quel DSLAM, d'analyser les paramètres de la ligne, et de comparer son état actuel
-                    avec son état normal stocké en <strong>base de données</strong>.
-                </p>
-            </div>
-
-            <!-- Objectifs -->
-            <div class="proj-section">
-                <span class="proj-section-label">OBJECTIFS</span>
-                <h2>Ce qu'on devait réaliser</h2>
-
-                <div class="obj-group-title">Côté Télécoms</div>
-                <ul class="objectives-list">
-                    <li>
-                        <span class="obj-num">1</span>
-                        <span class="obj-text">Comprendre la modulation <strong>OFDM/DMT</strong> utilisée en
-                            ADSL/VDSL2</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">2</span>
-                        <span class="obj-text">Analyser les 4 paramètres de ligne : <strong>QLN, SNR, HLOG</strong> et
-                            <strong>BitAlloc</strong></span>
-                    </li>
-                    <li>
-                        <span class="obj-num">3</span>
-                        <span class="obj-text">Étudier l'impact de <strong>perturbateurs électromagnétiques</strong> sur
-                            une ligne de 2 km réelle</span>
-                    </li>
-                </ul>
-
-                <div class="obj-group-title">Côté Informatique</div>
-                <ul class="objectives-list">
-                    <li>
-                        <span class="obj-num">4</span>
-                        <span class="obj-text">Concevoir une <strong>API REST asynchrone</strong> avec FastAPI et
-                            Python</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">5</span>
-                        <span class="obj-text">Développer le front-end en <strong>HTML/CSS/JavaScript</strong> avec
-                            Chart.js pour l'affichage des courbes</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">6</span>
-                        <span class="obj-text">Implémenter une base de données <strong>NoSQL MongoDB</strong> pour
-                            stocker les profils de lignes</span>
-                    </li>
-                    <li>
-                        <span class="obj-num">7</span>
-                        <span class="obj-text">Automatiser la connexion <strong>SSH aux DSLAM</strong> avec
-                            Paramiko/asyncssh</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Architecture -->
-            <div class="proj-section">
-                <span class="proj-section-label">ARCHITECTURE</span>
-                <h2>Architecture 3-tiers</h2>
-                <table class="archi-table">
-                    <thead>
-                        <tr>
-                            <th>Couche</th>
-                            <th>Technologie</th>
-                            <th>Rôle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Front-end</td>
-                            <td>Nginx + HTML/JS/Chart.js</td>
-                            <td>Interface web, affichage des courbes, requêtes HTTP</td>
-                        </tr>
-                        <tr>
-                            <td>Back-end</td>
-                            <td>Python FastAPI (async)</td>
-                            <td>API REST, proxy vers DSLAM et MongoDB</td>
-                        </tr>
-                        <tr>
-                            <td>Base de données</td>
-                            <td>MongoDB (NoSQL)</td>
-                            <td>Stockage des profils de lignes en BSON</td>
-                        </tr>
-                        <tr>
-                            <td>Connexion DSLAM</td>
-                            <td>Paramiko / asyncssh</td>
-                            <td>Connexion SSH, commandes CLI, parsing</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Technologies -->
-            <div class="proj-section">
-                <span class="proj-section-label">TECHNOLOGIES</span>
-                <h2>Outils utilisés</h2>
-                <div class="tech-grid">
-                    <div class="tech-badge tech-python">
-                        <div class="tech-icon">Py</div>
-                        <div class="tech-info">
-                            <span class="tech-name">Python</span>
-                            <span class="tech-desc">asyncio, FastAPI, Paramiko, asyncssh, Matplotlib, Re</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-js">
-                        <div class="tech-icon">JS</div>
-                        <div class="tech-info">
-                            <span class="tech-name">JavaScript</span>
-                            <span class="tech-desc">fetch, événementiel, Chart.js</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-mongo">
-                        <div class="tech-icon">Mg</div>
-                        <div class="tech-info">
-                            <span class="tech-name">MongoDB</span>
-                            <span class="tech-desc">NoSQL orientée document, BSON/JSON</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-nginx">
-                        <div class="tech-icon">Nx</div>
-                        <div class="tech-info">
-                            <span class="tech-name">Nginx</span>
-                            <span class="tech-desc">Serveur web + proxy inverse</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-linux">
-                        <div class="tech-icon">🐧</div>
-                        <div class="tech-info">
-                            <span class="tech-name">Linux</span>
-                            <span class="tech-desc">Serveur SSH + RDP, VM bridgée</span>
-                        </div>
-                    </div>
-                    <div class="tech-badge tech-dslam">
-                        <div class="tech-icon">📟</div>
-                        <div class="tech-info">
-                            <span class="tech-name">DSLAM Zyxel VES1724-56</span>
-                            <span class="tech-desc">Équipement réseau réel, CLI</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Fonctionnement -->
-            <div class="proj-section">
-                <span class="proj-section-label">FONCTIONNEMENT</span>
-                <h2>Parcours utilisateur</h2>
-                <div class="steps-grid">
-                    <div class="step-card">
-                        <div class="step-card-num">Étape 01</div>
-                        <h3>Sélection du DSLAM</h3>
-                        <p>Menu déroulant alimenté dynamiquement via <strong>GET /api/dslams</strong>. Le technicien
-                            choisit l'équipement à interroger.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-card-num">Étape 02</div>
-                        <h3>Choix des paramètres</h3>
-                        <p>Sélection de la ligne, du paramètre (<strong>QLN / SNR / HLOG / BitAlloc / Tous</strong>) et
-                            du mode : analyse, comparaison ou enregistrement.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-card-num">Étape 03</div>
-                        <h3>Affichage des résultats</h3>
-                        <p>Graphique <strong>Chart.js</strong> dans le navigateur avec support multi-axes pour afficher
-                            les 4 paramètres simultanément.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tests sur ligne réelle -->
-            <div class="proj-section">
-                <span class="proj-section-label">TESTS EN LABO</span>
-                <h2>Tests sur ligne réelle</h2>
-                <p class="inline-14c80d">
-                    C'est ce qui distingue ce projet — travail sur du <strong>matériel réel</strong> en labo avec une
-                    ligne ADSL2+ simulée à l'aide de bobines de câble de 1 km (2 km total).
-                </p>
-                <div class="tests-grid">
-                    <div class="test-card">
-                        <h3>🔊 Perturbateur sinusoïdal</h3>
-                        <p>Antenne AM + GBF placés près du câble. Observation de la <strong>chute du SNR</strong> et
-                            adaptation automatique de la modulation sur les sous-porteuses affectées.</p>
-                        <span class="test-highlight">Impact → SNR</span>
-                    </div>
-                    <div class="test-card">
-                        <h3>⚡ Alimentation défectueuse</h3>
-                        <p>Alimentation posée à proximité du câble. Impact direct sur le <strong>BitAlloc</strong> :
-                            réduction du nombre de bits par symbole sur les fréquences perturbées.</p>
-                        <span class="test-highlight">Impact → BitAlloc</span>
-                    </div>
-                </div>
-                <div class="test-card inline-f4e330">
-                    <h3>📊 Analyse statistique</h3>
-                    <p>Calcul du <strong>SNR min/max/moyen</strong> par nombre de bits par symbole (0 à 15) avec
-                        <code>defaultdict</code> et <code>tabulate</code>. Permet de quantifier précisément l'impact de
-                        chaque perturbateur.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Résultats -->
-            <div class="proj-section">
-                <span class="proj-section-label">RÉSULTATS</span>
-                <h2>Résultats obtenus</h2>
-                <div class="browser-window">
-                    <div class="browser-chrome">
-                        <div class="browser-tabs">
-                            <div class="browser-dots">
-                                <span class="browser-dot browser-dot--red"></span>
-                                <span class="browser-dot browser-dot--yellow"></span>
-                                <span class="browser-dot browser-dot--green"></span>
-                            </div>
-                            <div class="browser-tab">
-                                <div class="browser-tab-icon"><svg xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                                    </svg></div>
-                                Résultats — Diagnostic ADSL
-                            </div>
-                        </div>
-                        <div class="browser-url-bar">
-                            <span class="browser-lock"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                </svg></span>
-                            <span
-                                class="browser-url-text"><strong>portfolio.fahd.dev</strong>/telecoms/resultats-diagnostic-adsl</span>
-                        </div>
-                    </div>
-                    <div class="browser-content">
-                        <div class="browser-placeholder">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" />
-                            </svg>
-                            <span>Capture d'écran à venir…</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="tests-grid" style="margin-top:20px;">
+          <div class="test-card">
+            <h3>🔊 Perturbateur sinusoïdal</h3>
+            <p>Antenne AM + GBF placés près du câble. Observation de la <strong>chute du SNR</strong> et adaptation
+              automatique de la modulation sur les sous-porteuses affectées.</p>
+            <span class="test-highlight">Impact → SNR</span>
+          </div>
+          <div class="test-card">
+            <h3>⚡ Alimentation défectueuse</h3>
+            <p>Alimentation posée à proximité du câble. Impact direct sur le <strong>BitAlloc</strong> : réduction du
+              nombre de bits par symbole sur les fréquences perturbées.</p>
+            <span class="test-highlight">Impact → BitAlloc</span>
+          </div>
         </div>
+        <div class="test-card inline-f4e330">
+          <h3>📊 Analyse statistique</h3>
+          <p>Calcul du <strong>SNR min/max/moyen</strong> par nombre de bits par symbole (0 à 15) avec
+            <code>defaultdict</code> et <code>tabulate</code>. Permet de quantifier précisément l'impact de chaque
+            perturbateur.
+          </p>
+        </div>
+      </div>
 
-        <script src="../../assets/js/footer.js" defer></script>
+      <!-- Résultats -->
+      <div class="proj-section">
+        <span class="proj-section-label">RÉSULTATS</span>
+        <h2>Résultats obtenus</h2>
+        <div class="browser-window">
+          <div class="browser-chrome">
+            <div class="browser-tabs">
+              <div class="browser-dots">
+                <span class="browser-dot browser-dot--red"></span>
+                <span class="browser-dot browser-dot--yellow"></span>
+                <span class="browser-dot browser-dot--green"></span>
+              </div>
+              <div class="browser-tab">
+                <div class="browser-tab-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+                </div>
+                Résultats — Diagnostic ADSL
+              </div>
+            </div>
+            <div class="browser-url-bar">
+              <span class="browser-lock">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </span>
+              <span
+                class="browser-url-text"><strong>portfolio.fahd.dev</strong>/telecoms/resultats-diagnostic-adsl</span>
+            </div>
+          </div>
+          <div class="browser-content">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=70&auto=format&fit=crop"
+              alt="Graphiques d'analyse de données réseau"
+              style="width:100%;height:280px;object-fit:cover;display:block;" />
+          </div>
+        </div>
+      </div>
 
     </div>
 
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer id="site-footer">
+      <div class="footer-nav-bar">
+        <div class="footer-nav-inner">
+          <div>
+            <div class="footer-col-title">Téléphones &amp; Objets</div>
+            <ul class="footer-col-links">
+              <li><a href="#">Smartphones</a></li>
+              <li><a href="#">Téléphones reconditionnés</a></li>
+              <li><a href="#">Montres connectées</a></li>
+              <li><a href="#">Accessoires</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Box &amp; TV</div>
+            <ul class="footer-col-links">
+              <li><a href="#">Box Internet</a></li>
+              <li><a href="#">TV d'Orange</a></li>
+              <li><a href="#">Livebox</a></li>
+              <li><a href="#">Fibre optique</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Forfaits Mobile</div>
+            <ul class="footer-col-links">
+              <li><a href="#">Forfaits avec mobile</a></li>
+              <li><a href="#">Forfaits SIM seule</a></li>
+              <li><a href="#">Forfaits prépayés</a></li>
+              <li><a href="#">5G Orange</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Mon Espace</div>
+            <ul class="footer-col-links">
+              <li><a href="#">Gérer mon compte</a></li>
+              <li><a href="#">Mes factures</a></li>
+              <li><a href="#">Assistance</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="footer-col-title">Orange &amp; Vous</div>
+            <ul class="footer-col-links">
+              <li><a href="#">Orange Innovation</a></li>
+              <li><a href="#">Fondation Orange</a></li>
+              <li><a href="#">Développement durable</a></li>
+              <li><a href="#">Emploi &amp; Stages</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-terms-bar">
+        <div class="footer-terms-inner">
+          <a href="/" class="footer-terms-logo" aria-label="Orange — Accueil">
+            <div class="footer-terms-logo-mark">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="20" cy="20" r="18" fill="none" stroke="white" stroke-width="3" />
+                <text x="20" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="white"
+                  font-family="Helvetica Neue,Arial,sans-serif">O</text>
+              </svg>
+            </div>
+            <span class="footer-terms-logo-text">Orange</span>
+          </a>
+          <ul class="footer-legal-links">
+            <li><a href="#">Mentions légales</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Gestion des cookies</a></li>
+            <li><a href="#">Accessibilité</a></li>
+            <li><a href="#">Plan du site</a></li>
+          </ul>
+          <span class="footer-copyright">© Orange 2025 — Portfolio de Fahd Cliquet-Benbrahim</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 </body>
 
 </html>

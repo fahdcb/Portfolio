@@ -50,38 +50,49 @@
       Retour
     </a>`;
 
+  var bannerHTML = `
+    <div class="site-banner">
+      <span>Site en cours d'évolution — Nouvelle MAJ prochainement 🚀</span>
+    </div>`;
+
   var headerHTML;
   if (isHome) {
     headerHTML = `
     <header class="hero-header">
-      <a href="${rootPath}pages/autres/portfolio-about.html" class="logo" style="text-decoration:none;">
-        <span class="logo-bracket">&lt;</span>Portfolio<span class="logo-bracket">/&gt;</span>
-      </a>
-      <div class="header-title">
-        <span class="header-site-name">Fahd Cliquet-Benbrahim</span>
-        <span class="header-site-sub">BUT R&amp;T · Cybersécurité · IUT Vélizy</span>
-      </div>
-      <div class="header-actions">
-        ${emailBtn}
-        ${cvBtn}
+      ${bannerHTML}
+      <div class="header-inner">
+        <a href="${rootPath}pages/autres/portfolio-about.html" class="logo" style="text-decoration:none;">
+          <span class="logo-bracket">&lt;</span>Portfolio<span class="logo-bracket">/&gt;</span>
+        </a>
+        <div class="header-title">
+          <span class="header-site-name">Fahd Cliquet-Benbrahim</span>
+          <span class="header-site-sub">BUT R&amp;T · Cybersécurité · IUT Vélizy</span>
+        </div>
+        <div class="header-actions">
+          ${emailBtn}
+          ${cvBtn}
+        </div>
       </div>
     </header>`;
   } else {
     headerHTML = `
     <header class="cat-header">
-      <div style="display:flex; align-items:center; gap:20px;">
-        ${backBtn}
-        <a href="${rootPath}pages/autres/portfolio-about.html" class="logo" style="text-decoration:none;">
-          <span class="logo-bracket">&lt;</span>Portfolio<span class="logo-bracket">/&gt;</span>
-        </a>
-      </div>
-      <div class="header-title">
-        <span class="header-site-name">Fahd Cliquet-Benbrahim</span>
-        <span class="header-site-sub">BUT R&amp;T · Cybersécurité · IUT Vélizy</span>
-      </div>
-      <div class="header-actions">
-        ${emailBtn}
-        ${cvBtn}
+      ${bannerHTML}
+      <div class="header-inner">
+        <div style="display:flex; align-items:center; gap:20px;">
+          ${backBtn}
+          <a href="${rootPath}pages/autres/portfolio-about.html" class="logo" style="text-decoration:none;">
+            <span class="logo-bracket">&lt;</span>Portfolio<span class="logo-bracket">/&gt;</span>
+          </a>
+        </div>
+        <div class="header-title">
+          <span class="header-site-name">Fahd Cliquet-Benbrahim</span>
+          <span class="header-site-sub">BUT R&amp;T · Cybersécurité · IUT Vélizy</span>
+        </div>
+        <div class="header-actions">
+          ${emailBtn}
+          ${cvBtn}
+        </div>
       </div>
     </header>`;
   }

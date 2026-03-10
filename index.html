@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -10,256 +10,1742 @@
     <meta name="author" content="Fahd Cliquet-Benbrahim" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f0f4ff;
+            --bg2: #ffffff;
+            --cyan: #0891b2;
+            --cyanl: #e0f7fa;
+            --green: #059669;
+            --greenl: #d1fae5;
+            --purple: #7c3aed;
+            --purplel: #ede9fe;
+            --amber: #d97706;
+            --amberl: #fef3c7;
+            --red: #e11d48;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Outfit', sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        html::-webkit-scrollbar {
+            display: none;
+            /* Masquer comme sur téléphone */
+        }
+
+        html {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Canvas réseau (fond) ─────────────────────────── */
+        #net-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: .35;
+        }
+
+        /* ── Layout pleine page ──────────────────────────── */
+        .page {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+        }
+
+        /* ── Header full-width ───────────────────────────── */
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 58px;
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            background: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .logo-mark span {
+            font-family: var(--mono);
+            font-size: .65rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -.03em;
+        }
+
+        .logo-name {
+            font-size: .92rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -.01em;
+            transition: color 0.3s ease;
+        }
+
+        .logo-name em {
+            font-style: normal;
+            color: var(--cyan);
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+
+        /* ── Animation Logo Hover ────────────────────────── */
+        .logo:hover .logo-mark {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--cyan);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        .logo:hover .logo-name {
+            color: var(--cyan);
+        }
+
+        .logo:hover .logo-name em {
+            color: var(--green);
+            transform: translateX(2px);
+        }
+
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-items a {
+            font-family: var(--mono);
+            font-size: .72rem;
+            text-decoration: none;
+            color: var(--muted);
+            padding: 5px 12px;
+            border-radius: 6px;
+            transition: background .18s, color .18s;
+            letter-spacing: .04em;
+        }
+
+        .nav-items a:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        /* ── Email Popup ─────────────────────────────────── */
+        .email-popup-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .header-email-btn {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background .18s, color .18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-email-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .header-email-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .email-popup {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+
+        .email-popup.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .email-popup-addr {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--text);
+            user-select: all;
+        }
+
+        .email-copy-btn {
+            background: rgba(8, 145, 178, 0.1);
+            border: 1px solid rgba(8, 145, 178, 0.3);
+            color: var(--cyan);
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .email-copy-btn:hover {
+            background: rgba(8, 145, 178, 0.2);
+            border-color: var(--cyan);
+        }
+
+        .email-copy-btn.copied {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .email-copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ── Bouton CV ───────────────────────────────────── */
+        .cv-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--cyanl);
+            color: var(--cyan);
+            border: 1px solid #bae6fd;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-left: 4px;
+        }
+
+        .cv-btn:hover {
+            background: rgba(8, 145, 178, 0.15);
+            border-color: var(--cyan);
+            color: var(--cyan);
+            transform: translateY(-1px);
+        }
+
+        .cv-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .nav-badge {
+            font-family: var(--mono);
+            font-size: .65rem;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--greenl);
+            color: var(--green);
+            border: 1px solid #a7f3d0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .nav-badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* ── Contenu principal ───────────────────────────── */
+        .main-content {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: calc(100vh - 58px);
+            align-items: start;
+        }
+
+        /* ── Sidebar gauche ──────────────────────────────── */
+        .sidebar {
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            position: sticky;
+            top: 58px;
+            height: calc(100vh - 58px);
+            overflow-y: auto;
+            min-width: 0;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-label {
+            font-family: var(--mono);
+            font-size: .62rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-name {
+            font-size: 1.35rem;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -.03em;
+        }
+
+        .profile-name .accent {
+            color: var(--cyan);
+        }
+
+        .profile-role {
+            font-size: .8rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.6;
+            margin-top: 4px;
+        }
+
+        .stat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: .78rem;
+        }
+
+        .stat-key {
+            font-family: var(--mono);
+            font-size: .68rem;
+            color: var(--muted);
+            letter-spacing: .04em;
+        }
+
+        .stat-val {
+            font-weight: 600;
+            font-size: .78rem;
+            color: var(--text);
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-family: var(--mono);
+            font-size: .62rem;
+            padding: 3px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            background: var(--bg);
+            transition: background .15s, color .15s, border-color .15s;
+            cursor: default;
+        }
+
+        .tag:hover {
+            background: var(--cyanl);
+            color: var(--cyan);
+            border-color: #a5f3fc;
+        }
+
+        .tag.active {
+            background: var(--text);
+            color: #fff;
+            border-color: var(--text);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            font-family: var(--mono);
+            font-size: .62rem;
+            color: var(--border);
+            line-height: 1.8;
+        }
+
+        /* ── Zone droite ─────────────────────────────────── */
+        .right-area {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* ── Hero banner ─────────────────────────────────── */
+        .hero-banner {
+            padding: 44px 48px 36px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0c4a6e 100%);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 80% at 80% 50%, rgba(8, 145, 178, .35), transparent 65%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(5, 150, 105, .25), transparent 60%);
+        }
+
+        /* grille fine */
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .hero-tag {
+            font-family: var(--mono);
+            font-size: .68rem;
+            color: rgba(103, 232, 249, .8);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-tag::before {
+            content: '';
+            width: 18px;
+            height: 1px;
+            background: rgba(103, 232, 249, .6);
+        }
+
+        .hero-h1 {
+            font-size: clamp(2.4rem, 4.5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -.04em;
+            color: #fff;
+        }
+
+        .hero-h1 .grad {
+            background: linear-gradient(90deg, #67e8f9, #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            color: rgba(203, 213, 225, .7);
+            font-size: .95rem;
+            font-weight: 300;
+            margin-top: 12px;
+            max-width: 360px;
+            line-height: 1.7;
+        }
+
+        .hero-num {
+            font-family: var(--mono);
+            font-size: clamp(5rem, 10vw, 9rem);
+            font-weight: 700;
+            line-height: 1;
+            color: rgba(255, 255, 255, .06);
+            letter-spacing: -.06em;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        /* ── Grille de cartes ────────────────────────────── */
+        .cards-area {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 32px 32px 28px;
+            text-decoration: none;
+            color: var(--text);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg2);
+            overflow: hidden;
+            will-change: transform;
+            transform: translateZ(0);
+            transition: background .22s;
+            min-height: 240px;
+        }
+
+        .card:nth-child(even) {
+            border-right: none;
+        }
+
+        .card:nth-child(3),
+        .card:nth-child(4) {
+            border-bottom: none;
+        }
+
+        /* reset pour 1 colonne (mobile) — géré dans @media */
+
+        /* barre couleur du haut */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .32s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        #card-reseaux::before {
+            background: linear-gradient(90deg, var(--cyan), #06b6d4);
+        }
+
+        #card-prog::before {
+            background: linear-gradient(90deg, var(--green), #10b981);
+        }
+
+        #card-telecoms::before {
+            background: linear-gradient(90deg, var(--purple), #8b5cf6);
+        }
+
+        #card-thales::before {
+            background: linear-gradient(90deg, var(--amber), #f59e0b);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* glow bg */
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+        }
+
+        #card-reseaux::after {
+            background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(8, 145, 178, .07), transparent 60%);
+        }
+
+        #card-prog::after {
+            background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(5, 150, 105, .07), transparent 60%);
+        }
+
+        #card-telecoms::after {
+            background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(124, 58, 237, .07), transparent 60%);
+        }
+
+        #card-thales::after {
+            background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(217, 119, 6, .07), transparent 60%);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card:hover {
+            background: #fafcff;
+        }
+
+        .card-num {
+            font-family: var(--mono);
+            font-size: .62rem;
+            letter-spacing: .1em;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        #card-reseaux .card-num {
+            color: var(--cyan);
+        }
+
+        #card-prog .card-num {
+            color: var(--green);
+        }
+
+        #card-telecoms .card-num {
+            color: var(--purple);
+        }
+
+        #card-thales .card-num {
+            color: var(--amber);
+        }
+
+        .card-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            will-change: transform;
+            transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        #card-reseaux .card-icon {
+            background: var(--cyanl);
+            color: var(--cyan);
+        }
+
+        #card-prog .card-icon {
+            background: var(--greenl);
+            color: var(--green);
+        }
+
+        #card-telecoms .card-icon {
+            background: var(--purplel);
+            color: var(--purple);
+        }
+
+        #card-thales .card-icon {
+            background: var(--amberl);
+            color: var(--amber);
+        }
+
+        .card:hover .card-icon {
+            transform: translate3d(0, -4px, 0) scale(1.05);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            letter-spacing: -.02em;
+        }
+
+        .card-text {
+            font-size: .84rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+            flex: 1;
+        }
+
+        .card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 20px;
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: gap .25s, color .25s;
+        }
+
+        .card-cta svg {
+            width: 14px;
+            height: 14px;
+            transition: transform .25s;
+            will-change: transform;
+        }
+
+        #card-reseaux .card-cta {
+            color: var(--cyan);
+        }
+
+        #card-prog .card-cta {
+            color: var(--green);
+        }
+
+        #card-telecoms .card-cta {
+            color: var(--purple);
+        }
+
+        #card-thales .card-cta {
+            color: var(--amber);
+        }
+
+        .card:hover .card-cta {
+            gap: 11px;
+        }
+
+        .card:hover .card-cta svg {
+            transform: translateX(3px);
+        }
+
+        /* ── Section parcours ────────────────────────────── */
+        .parcours-section {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 52px 48px 60px;
+            grid-column: 1 / -1;
+        }
+
+        .parcours-top {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 44px;
+        }
+
+        .parcours-title {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            line-height: 1.1;
+        }
+
+        .parcours-title .grad {
+            background: linear-gradient(90deg, var(--cyan), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .parcours-intro {
+            max-width: 380px;
+            font-size: .88rem;
+            color: var(--muted);
+            font-weight: 300;
+            line-height: 1.7;
+            border-left: 2px solid var(--border);
+            padding-left: 16px;
+        }
+
+        /* Scroll wrapper */
+        .ms-scroll-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ms-arrow {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--muted);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color .18s, color .18s, background .18s;
+        }
+
+        .ms-arrow:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: var(--cyanl);
+        }
+
+        .ms-arrow svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .milestones {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 6px 2px 16px;
+            flex: 1;
+            cursor: grab;
+        }
+
+        .milestones:active {
+            cursor: grabbing;
+        }
+
+        .milestones::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .milestones::-webkit-scrollbar-track {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .milestones::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 10px;
+            opacity: .5;
+        }
+
+        .ms-step {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 240px;
+            outline: none;
+        }
+
+        .ms-card {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 18px;
+            background: var(--bg2);
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            will-change: transform;
+            transform: translateZ(0);
+            transition: transform .28s cubic-bezier(.22, 1, .36, 1), border-color .28s, box-shadow .28s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ms-step:hover .ms-card,
+        .ms-step:focus .ms-card {
+            transform: translate3d(0, -4px, 0);
+            border-color: #bae6fd;
+            box-shadow: 0 8px 24px rgba(8, 145, 178, .1);
+        }
+
+        .ms-current .ms-card {
+            border-color: #a7f3d0;
+            background: linear-gradient(160deg, #f0fdf4 0%, #fff 100%);
+        }
+
+        .ms-current .ms-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--green));
+        }
+
+        .ms-num {
+            font-family: var(--mono);
+            font-size: .62rem;
+            color: var(--cyan);
+            letter-spacing: .1em;
+            font-weight: 700;
+        }
+
+        .ms-year {
+            font-family: var(--mono);
+            font-size: .7rem;
+            color: var(--muted);
+        }
+
+        .ms-title {
+            font-size: .98rem;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -.02em;
+        }
+
+        .ms-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .ms-pills span {
+            font-family: var(--mono);
+            font-size: .6rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: var(--cyanl);
+            border: 1px solid #bae6fd;
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        .ms-current .ms-pills span {
+            background: var(--greenl);
+            border-color: #a7f3d0;
+            color: var(--green);
+        }
+
+        .ms-desc {
+            font-size: .79rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+        }
+
+        .ms-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: .62rem;
+            font-weight: 700;
+            color: var(--green);
+            background: var(--greenl);
+            border: 1px solid #a7f3d0;
+            padding: 3px 10px;
+            border-radius: 4px;
+            width: fit-content;
+        }
+
+        .ms-badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        /* ── Footer ──────────────────────────────────────── */
+        .site-footer {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-text {
+            font-family: var(--mono);
+            font-size: .65rem;
+            color: var(--muted);
+            letter-spacing: .06em;
+        }
+
+        .footer-text span {
+            color: var(--cyan);
+            font-weight: 700;
+        }
+
+        .footer-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: .62rem;
+            color: var(--muted);
+        }
+
+        .footer-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        /* ── Responsive ──────────────────────────────────── */
+
+        /* ≤ 1024px : sidebar réduite */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 200px 1fr;
+            }
+
+            .sidebar {
+                padding: 24px 16px;
+                gap: 24px;
+            }
+
+            .profile-name {
+                font-size: 1.1rem;
+            }
+
+            .card {
+                padding: 22px 18px 18px;
+            }
+
+            .hero-banner {
+                padding: 32px 28px 26px;
+            }
+
+            .parcours-section {
+                padding: 36px 28px 44px;
+            }
+        }
+
+        /* ≤ 768px : sidebar disparaît, tout empilé */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                padding: 24px 20px;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+
+            .hero-banner {
+                padding: 28px 20px 22px;
+            }
+
+            .hero-num {
+                display: none;
+            }
+
+            .hero-h1 {
+                font-size: clamp(1.8rem, 5vw, 2.8rem);
+            }
+
+            .cards-area {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            /* rétablir les bordures correctes en 2 colonnes */
+            .card {
+                border-right: 1px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                min-height: 200px;
+                padding: 20px 18px 16px;
+            }
+
+            .card:nth-child(even) {
+                border-right: none;
+            }
+
+            .card:nth-child(3),
+            .card:nth-child(4) {
+                border-bottom: none;
+            }
+
+            .parcours-section {
+                padding: 28px 20px 36px;
+            }
+
+            .parcours-top {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .parcours-intro {
+                border-left: none;
+                padding-left: 0;
+                max-width: 100%;
+                border-top: 2px solid var(--border);
+                padding-top: 14px;
+            }
+
+            .site-header {
+                padding: 0 20px;
+            }
+
+            .site-footer {
+                padding: 14px 20px;
+            }
+        }
+
+        /* ≤ 480px : 1 seule colonne, mobile pur */
+        @media (max-width: 480px) {
+            .site-header {
+                padding: 0 14px;
+                height: 50px;
+            }
+
+            .nav-items a {
+                display: none;
+            }
+
+            .logo-name {
+                font-size: .82rem;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+                padding: 18px 14px;
+                gap: 16px;
+            }
+
+            .tag-cloud {
+                display: none;
+            }
+
+            .stat-list .stat-row {
+                font-size: .72rem;
+            }
+
+            .hero-banner {
+                padding: 20px 14px 18px;
+            }
+
+            .hero-tag {
+                font-size: .6rem;
+            }
+
+            .hero-h1 {
+                font-size: 1.7rem;
+            }
+
+            .hero-desc {
+                font-size: .83rem;
+            }
+
+            .cards-area {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                border-right: none !important;
+                border-bottom: 1px solid var(--border) !important;
+                min-height: auto;
+                padding: 18px 14px 14px;
+            }
+
+            .card:last-child {
+                border-bottom: none !important;
+            }
+
+            .card-title {
+                font-size: .95rem;
+            }
+
+            .parcours-section {
+                padding: 22px 14px 30px;
+            }
+
+            .parcours-title {
+                font-size: 1.5rem;
+            }
+
+            .ms-step {
+                width: 200px;
+            }
+
+            .ms-card {
+                padding: 14px 12px;
+                gap: 7px;
+            }
+
+            .site-footer {
+                padding: 12px 14px;
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
-<body class="theme-default">
+<body>
 
-    <div class="bg-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <canvas id="net-canvas"></canvas>
 
-    <main class="hero">
+    <div class="page">
 
-        <script src="assets/js/header.js" defer></script>
-
-        <section class="hero-content">
-            <h1 class="hero-title">Mes <span class="gradient-text">Projets</span></h1>
-            <p class="hero-desc">Explorez mes réalisations par domaine d'expertise.</p>
-
-            <div class="cards-container">
-
-                <!-- Card 1 -->
-                <a href="pages/reseaux/reseaux-cybersecurite.html" class="card" id="card-reseaux">
-                    <div class="card-glow"></div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                            <path d="M9 12l2 2 4-4" />
-                        </svg>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">Réseaux &amp;<br />Cybersécurité</h2>
-                        <p class="card-text">Protocoles, sécurité réseau, cryptographie et systèmes distribués.</p>
-                    </div>
-                    <div class="card-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                    <div class="card-num">01</div>
-                </a>
-
-                <!-- Card 2 -->
-                <a href="pages/programmation/programmation.html" class="card" id="card-prog">
-                    <div class="card-glow"></div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="16 18 22 12 16 6" />
-                            <polyline points="8 6 2 12 8 18" />
-                        </svg>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">Programmation</h2>
-                        <p class="card-text">Applications web, algorithmes et développement logiciel.</p>
-                    </div>
-                    <div class="card-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                    <div class="card-num">02</div>
-                </a>
-
-                <!-- Card 3 -->
-                <a href="pages/telecoms/telecoms-signal.html" class="card" id="card-telecoms">
-                    <div class="card-glow"></div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                        </svg>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">Télécoms &amp;<br />Signal</h2>
-                        <p class="card-text">Traitement du signal, transmission, modulation et systèmes de
-                            communication.</p>
-                    </div>
-                    <div class="card-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                    <div class="card-num">03</div>
-                </a>
-
-                <!-- Card 4 -->
-                <a href="pages/autres/thales.html" class="card" id="card-thales">
-                    <div class="card-glow"></div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                            <path d="M2 12h20" />
-                        </svg>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">Stage Professionnel<br />chez Thales (2026)</h2>
-                        <p class="card-text">Expérience en entreprise dans le domaine de la défense et des technologies
-                            avancées.</p>
-                    </div>
-                    <div class="card-arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                    <div class="card-num">04</div>
-                </a>
-
-            </div>
-        </section>
-
-        <!-- ===================== MON PARCOURS ===================== -->
-        <section class="parcours-section">
-            <div class="parcours-inner">
-
-                <div class="parcours-header">
-                    <h2 class="parcours-title">Mon <span class="gradient-text">Parcours</span></h2>
-                    <p class="parcours-intro">
-                        Mon intérêt pour les sciences et la technologie s'est construit progressivement
-                        tout au long de ma scolarité.
-                    </p>
+        <!-- Header -->
+        <header class="site-header">
+            <a class="logo" href="#">
+                <div class="logo-mark"><span>FCB</span></div>
+                <span class="logo-name">Fahd <em>C-B.</em></span>
+            </a>
+            <nav class="nav-items">
+                <div class="email-popup-wrapper">
+                  <button class="header-email-btn" id="emailToggleBtn" title="Contact">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2"/>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  </button>
+                  <div class="email-popup" id="emailPopup">
+                    <span class="email-popup-addr">fahdcb@outlook.fr</span>
+                    <button class="email-copy-btn" id="emailCopyBtn" title="Copier l'adresse">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="2" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
 
+                <!-- CV Button -->
+                <a href="assets/docs/cv.pdf" download class="cv-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  CV
+                </a>
 
-                <div class="ms-scroll-wrapper">
+                <div class="nav-badge">En ligne</div>
+            </nav>
+        </header>
 
-                    <button class="ms-arrow ms-arrow-left" onclick="msScroll(-1)" aria-label="Précédent">
-                        <svg viewBox="0 0 24 24">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                    </button>
+        <!-- Contenu principal -->
+        <div class="main-content">
 
-                    <div class="milestones" id="milestones-track">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Profil</div>
+                    <div class="profile-name">Fahd<br /><span class="accent">Cliquet-Benbrahim</span></div>
+                    <p class="profile-role">Étudiant en 2ᵉ année de BUT Réseaux &amp; Télécommunications, spécialisé en
+                        cybersécurité et programmation.</p>
+                </div>
 
-                        <div class="ms-step" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">01</span>
-                                <span class="ms-year">Qui suis-je ?</span>
-                                <h3 class="ms-title">Fahd<br />Cliquet-Benbrahim</h3>
-                                <div class="ms-pills"><span>20 ans</span><span>BUT R&amp;T</span><span>IUT Vélizy</span>
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Infos</div>
+                    <div class="stat-list">
+                        <div class="stat-row">
+                            <span class="stat-key">age</span>
+                            <span class="stat-val">20 ans</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-key">formation</span>
+                            <span class="stat-val">BUT R&T</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-key">lieu</span>
+                            <span class="stat-val">IUT Vélizy</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-key">option</span>
+                            <span class="stat-val">Cybersécurité</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-key">année</span>
+                            <span class="stat-val">2025–2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Compétences</div>
+                    <div class="tag-cloud">
+                        <span class="tag active">Réseaux</span>
+                        <span class="tag active">Cybersécurité</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">C</span>
+                        <span class="tag">Linux</span>
+                        <span class="tag">Cisco</span>
+                        <span class="tag">Cryptographie</span>
+                        <span class="tag">Signal</span>
+                        <span class="tag">Web</span>
+                        <span class="tag">Wireshark</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-label">Loisirs</div>
+                    <div class="tag-cloud">
+                        <span class="tag">Basket</span>
+                        <span class="tag">Muscu</span>
+                        <span class="tag">Tech</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    &copy; 2026 · Fahd Cliquet-Benbrahim<br />
+                    Portfolio BUT R&T · IUT Vélizy
+                </div>
+            </aside>
+
+            <!-- Zone droite -->
+            <div class="right-area">
+
+                <!-- Hero banner -->
+                <div class="hero-banner" id="projets">
+                    <div class="hero-inner">
+                        <div>
+                            <div class="hero-tag">Projets &amp; Réalisations</div>
+                            <h1 class="hero-h1">Mes <span class="grad">Projets</span></h1>
+                            <p class="hero-desc">Explorez mes réalisations par domaine d'expertise.</p>
+                        </div>
+                        <div class="hero-num">04</div>
+                    </div>
+                </div>
+
+                <!-- 4 cartes -->
+                <div class="cards-area">
+
+                    <a href="pages/reseaux-infrastructure-multi-sites.html" class="card" id="card-reseaux">
+                        <div class="card-num">// 01</div>
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                <path d="M9 12l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <h2 class="card-title">Infrastructure<br />Multi-sites</h2>
+                        <p class="card-text">Configuration et déploiement d'une architecture réseau multi-sites sécurisée.</p>
+                        <div class="card-cta">
+                            Accéder
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </a>
+
+                    <a href="pages/reseaux-pentest-web.html" class="card" id="card-prog">
+                        <div class="card-num">// 02</div>
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        </div>
+                        <h2 class="card-title">Pentest Web<br />CTF</h2>
+                        <p class="card-text">Exploitation de vulnérabilités web et techniques de test d'intrusion.</p>
+                        <div class="card-cta">
+                            Accéder
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </a>
+
+                    <a href="pages/telecoms-diagnostic-adsl.html" class="card" id="card-telecoms">
+                        <div class="card-num">// 03</div>
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                        </div>
+                        <h2 class="card-title">Diagnostic<br />ADSL/VDSL2</h2>
+                        <p class="card-text">Analyse et dépannage des lignes de télécommunication haut débit.</p>
+                        <div class="card-cta">
+                            Accéder
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </a>
+
+                    <a href="pages/reseaux-challenge-ftp.html" class="card" id="card-thales">
+                        <div class="card-num">// 04</div>
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                                <line x1="6" y1="6" x2="6.01" y2="6" />
+                                <line x1="6" y1="18" x2="6.01" y2="18" />
+                            </svg>
+                        </div>
+                        <h2 class="card-title">Challenge FTP<br />Sécurisé</h2>
+                        <p class="card-text">Mise en place d'un serveur FTP sécurisé dans le cadre d'un défi technique.</p>
+                        <div class="card-cta">
+                            Accéder
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </a>
+
+                </div>
+
+                <!-- Parcours -->
+                <section class="parcours-section" id="parcours">
+                    <div class="parcours-top">
+                        <h2 class="parcours-title">Mon <span class="grad">Parcours</span></h2>
+                        <p class="parcours-intro">
+                            Mon intérêt pour les sciences et la technologie s'est construit progressivement
+                            tout au long de ma scolarité.
+                        </p>
+                    </div>
+
+                    <div class="ms-scroll-wrapper">
+                        <button class="ms-arrow" onclick="msScroll(-1)" aria-label="Précédent">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="15 18 9 12 15 6" />
+                            </svg>
+                        </button>
+
+                        <div class="milestones" id="milestones-track">
+
+                            <div class="ms-step" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 01</span>
+                                    <span class="ms-year">Qui suis-je ?</span>
+                                    <h3 class="ms-title">Fahd<br />Cliquet-Benbrahim</h3>
+                                    <div class="ms-pills"><span>20 ans</span><span>BUT R&amp;T</span><span>IUT
+                                            Vélizy</span></div>
+                                    <p class="ms-desc">Étudiant en 2ᵉ année de BUT Réseaux &amp; Télécommunications,
+                                        spécialisé en cybersécurité et programmation. Curieux, rigoureux et sportif
+                                        (basket, muscu).</p>
                                 </div>
-                                <p class="ms-desc">Étudiant en 2ᵉ année de BUT Réseaux &amp; Télécommunications,
-                                    spécialisé en cybersécurité et programmation. Passionné par les réseaux, la sécurité
-                                    informatique et le développement. Curieux, rigoureux et sportif (basket, muscu), je
-                                    cherche à mettre mes compétences au service de projets
-                                    techniques ambitieux.</p>
                             </div>
+
+                            <div class="ms-step" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 02</span>
+                                    <span class="ms-year">Seconde</span>
+                                    <h3 class="ms-title">Sciences de<br />l'Ingénieur</h3>
+                                    <div class="ms-pills"><span>Option SI</span></div>
+                                    <p class="ms-desc">Premier pas vers un profil technique et orienté résolution de
+                                        problèmes concrets.</p>
+                                </div>
+                            </div>
+
+                            <div class="ms-step" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 03</span>
+                                    <span class="ms-year">Première</span>
+                                    <h3 class="ms-title">Trois Spécialités<br />Complémentaires</h3>
+                                    <div class="ms-pills"><span>Maths</span><span>NSI</span><span>SI</span></div>
+                                    <p class="ms-desc">Rigueur analytique, logique de programmation et compréhension des
+                                        systèmes techniques.</p>
+                                </div>
+                            </div>
+
+                            <div class="ms-step" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 04</span>
+                                    <span class="ms-year">Terminale</span>
+                                    <h3 class="ms-title">Spécialisation<br />Numérique</h3>
+                                    <div class="ms-pills"><span>Maths</span><span>NSI</span><span>Maths Exp.</span>
+                                    </div>
+                                    <p class="ms-desc">Concentration sur le numérique et les systèmes d'information avec
+                                        l'option Maths Expertes.</p>
+                                </div>
+                            </div>
+
+                            <div class="ms-step" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 05</span>
+                                    <span class="ms-year">Baccalauréat</span>
+                                    <h3 class="ms-title">Bac Général<br />Obtenu</h3>
+                                    <div class="ms-pills"><span>Mention AB</span></div>
+                                    <p class="ms-desc">Validation de ces années de travail et de spécialisation
+                                        progressive.</p>
+                                </div>
+                            </div>
+
+                            <div class="ms-step ms-current" tabindex="0">
+                                <div class="ms-card">
+                                    <span class="ms-num">// 06</span>
+                                    <span class="ms-year">Aujourd'hui</span>
+                                    <h3 class="ms-title">BUT Réseaux &amp;<br />Télécoms — Vélizy</h3>
+                                    <div class="ms-pills"><span>IUT Vélizy</span><span>Cybersécurité</span></div>
+                                    <p class="ms-desc">Formation professionnalisante dans les réseaux, télécoms et
+                                        systèmes. Nombreux projets concrets à découvrir dans ce portfolio.</p>
+                                    <span class="ms-badge">En cours</span>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="ms-step" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">02</span>
-                                <span class="ms-year">Seconde</span>
-                                <h3 class="ms-title">Sciences de<br />l'Ingénieur</h3>
-                                <div class="ms-pills"><span>Option SI</span></div>
-                                <p class="ms-desc">Premier pas vers un profil technique et orienté résolution de
-                                    problèmes concrets.</p>
-                            </div>
-                        </div>
-
-                        <div class="ms-step" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">03</span>
-                                <span class="ms-year">Première</span>
-                                <h3 class="ms-title">Trois Spécialités<br />Complémentaires</h3>
-                                <div class="ms-pills"><span>Maths</span><span>NSI</span><span>SI</span></div>
-                                <p class="ms-desc">Rigueur analytique, logique de programmation et compréhension des
-                                    systèmes techniques.</p>
-                            </div>
-                        </div>
-
-                        <div class="ms-step" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">04</span>
-                                <span class="ms-year">Terminale</span>
-                                <h3 class="ms-title">Spécialisation<br />Numérique</h3>
-                                <div class="ms-pills"><span>Maths</span><span>NSI</span><span>Maths Exp.</span></div>
-                                <p class="ms-desc">Concentration sur le numérique et les systèmes d'information avec
-                                    l'option Maths Expertes.</p>
-                            </div>
-                        </div>
-
-                        <div class="ms-step" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">05</span>
-                                <span class="ms-year">Baccalauréat</span>
-                                <h3 class="ms-title">Bac Général<br />Obtenu</h3>
-                                <div class="ms-pills"><span>Mention AB</span></div>
-                                <p class="ms-desc">Validation de ces années de travail et de spécialisation progressive.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="ms-step ms-current" tabindex="0">
-                            <div class="ms-dot"></div>
-                            <div class="ms-card">
-                                <span class="ms-num">06</span>
-                                <span class="ms-year">Aujourd'hui</span>
-                                <h3 class="ms-title">BUT Réseaux &amp;<br />Télécoms — Vélizy</h3>
-                                <div class="ms-pills"><span>IUT Vélizy</span><span>Cybersécurité</span></div>
-                                <p class="ms-desc">Formation professionnalisante dans les réseaux, télécoms et systèmes.
-                                    Nombreux projets concrets à découvrir dans ce portfolio.</p>
-                                <span class="ms-badge">En cours</span>
-                            </div>
-                        </div>
-
+                        <button class="ms-arrow" onclick="msScroll(1)" aria-label="Suivant">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
                     </div>
+                </section>
 
-                    <button class="ms-arrow ms-arrow-right" onclick="msScroll(1)" aria-label="Suivant">
-                        <svg viewBox="0 0 24 24">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </button>
+            </div><!-- /right-area -->
+        </div><!-- /main-content -->
 
-                </div>
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-text">&copy; 2026 — <span>Fahd Cliquet-Benbrahim</span> · Portfolio BUT R&T</div>
+            <div class="footer-status">
+                <div class="footer-dot"></div>système en ligne
             </div>
-        </section>
+        </footer>
 
-        <script>
-            function msScroll(dir) {
-                document.getElementById('milestones-track').scrollBy({ left: dir * 290, behavior: 'smooth' });
+    </div><!-- /page -->
+
+    <script>
+        /* ── Canvas réseau ──────────────────────────── */
+        (function () {
+            const cv = document.getElementById('net-canvas');
+            const ctx = cv.getContext('2d');
+            let W, H, nodes;
+
+            function resize() {
+                W = cv.width = window.innerWidth;
+                H = cv.height = window.innerHeight;
+                init();
             }
-            // Drag-to-scroll
-            (function () {
-                var track = document.getElementById('milestones-track');
-                var isDown = false, startX, scrollLeft;
-                track.addEventListener('mousedown', function (e) { isDown = true; track.style.cursor = 'grabbing'; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-                track.addEventListener('mouseleave', function () { isDown = false; track.style.cursor = ''; });
-                track.addEventListener('mouseup', function () { isDown = false; track.style.cursor = ''; });
-                track.addEventListener('mousemove', function (e) { if (!isDown) return; e.preventDefault(); var x = e.pageX - track.offsetLeft; track.scrollLeft = scrollLeft - (x - startX); });
-            })();
-        </script>
+            function init() {
+                const n = Math.floor((W * H) / 20000);
+                nodes = Array.from({ length: n }, () => ({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: (Math.random() - .5) * .3,
+                    vy: (Math.random() - .5) * .3,
+                    r: Math.random() * 1.4 + .6,
+                    c: Math.random() > .55 ? '8,145,178' : '5,150,105'
+                }));
+            }
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                const D = 140;
+                for (let i = 0; i < nodes.length; i++) {
+                    const a = nodes[i];
+                    a.x += a.vx; a.y += a.vy;
+                    if (a.x < 0 || a.x > W) a.vx *= -1;
+                    if (a.y < 0 || a.y > H) a.vy *= -1;
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const b = nodes[j];
+                        const dx = a.x - b.x, dy = a.y - b.y;
+                        const d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < D) {
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y);
+                            ctx.lineTo(b.x, b.y);
+                            ctx.strokeStyle = `rgba(${a.c},${(1 - d / D) * .25})`;
+                            ctx.lineWidth = .8;
+                            ctx.stroke();
+                        }
+                    }
+                    ctx.beginPath();
+                    ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${a.c},.6)`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            resize(); draw();
+        })();
 
-        <script src="assets/js/footer.js" defer></script>
+        /* ── Scroll parcours ────────────────────────── */
+        function msScroll(dir) {
+            document.getElementById('milestones-track').scrollBy({ left: dir * 260, behavior: 'smooth' });
+        }
+        (function () {
+            var t = document.getElementById('milestones-track');
+            var down = false, sx, sl;
+            t.addEventListener('mousedown', e => { down = true; sx = e.pageX - t.offsetLeft; sl = t.scrollLeft; });
+            t.addEventListener('mouseleave', () => down = false);
+            t.addEventListener('mouseup', () => down = false);
+            t.addEventListener('mousemove', e => { if (!down) return; e.preventDefault(); t.scrollLeft = sl - (e.pageX - t.offsetLeft - sx); });
+        })();
+    </script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.36/dist/lenis.min.js"></script>
+    <script>
+        /* ── Smooth Scroll (Lenis) + Drag & Scroll sur la page ────────────────────────── */
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2
+        });
 
-    </main>
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
 
+        // Click & Drag pour faire défiler la page globalement (comportement tactile)
+        (function () {
+            let isDown = false;
+            let startY;
+            let scrollTop;
+
+            window.addEventListener('mousedown', (e) => {
+                // Ignorer si on clique sur un lien, un bouton ou la zone des milestones
+                if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.ms-scroll-wrapper') || e.target.closest('.sidebar')) return;
+                isDown = true;
+                startY = e.pageY;
+                scrollTop = window.scrollY || document.documentElement.scrollTop;
+                document.body.style.cursor = 'grabbing';
+            });
+            window.addEventListener('mouseleave', () => {
+                isDown = false;
+                document.body.style.cursor = '';
+            });
+            window.addEventListener('mouseup', () => {
+                isDown = false;
+                document.body.style.cursor = '';
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const y = e.pageY;
+                const walk = (y - startY) * 1.5; // Vitesse de déplacement
+                window.scrollTo(0, scrollTop - walk);
+            });
+        })();
+
+        /* ── Email Popup ─────────────────────────────────── */
+        (function() {
+            const btn = document.getElementById('emailToggleBtn');
+            const popup = document.getElementById('emailPopup');
+            const copyBtn = document.getElementById('emailCopyBtn');
+            const emailAddr = 'fahdcb@outlook.fr';
+
+            if (!btn || !popup || !copyBtn) return;
+
+            // Toggle le popup
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                popup.classList.toggle('show');
+            });
+
+            // Fermer si clic ailleurs
+            document.addEventListener('click', (e) => {
+                if (!popup.contains(e.target) && !btn.contains(e.target)) {
+                    popup.classList.remove('show');
+                }
+            });
+
+            // Bouton copier
+            copyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigator.clipboard.writeText(emailAddr).then(() => {
+                    const originalHTML = copyBtn.innerHTML;
+                    
+                    // Passer en succès
+                    copyBtn.classList.add('copied');
+                    copyBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    `;
+                    
+                    // Rétablir après 2s
+                    setTimeout(() => {
+                        copyBtn.classList.remove('copied');
+                        copyBtn.innerHTML = originalHTML;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Erreur lors de la copie', err);
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>
